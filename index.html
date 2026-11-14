@@ -11,7 +11,8 @@
   <style>
     :root{color-scheme:light;--bg:#eef3fd;--surface:rgba(248,252,255,.91);--ink:#10233f;--soft:#526b83;--muted:#7188a0;--blue:#2477c9;--border:rgba(35,91,135,.2);--shadow:0 24px 70px rgba(6,38,72,.24)}
     *{box-sizing:border-box}body{position:relative;isolation:isolate;margin:0;min-height:100vh;background:#cde7f8;color:var(--ink);font:14px Inter,sans-serif}body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(6,31,58,.20),rgba(12,90,142,.04) 55%,rgba(5,36,68,.16)),url("../bg%204.jpg") center/cover no-repeat}.shell{width:min(900px,calc(100% - 32px));margin:8vh auto}.brand{font:800 12px Sora,sans-serif;letter-spacing:.14em;color:#f5fbff;text-shadow:0 2px 12px rgba(8,38,67,.72);text-transform:uppercase;margin-bottom:18px}.card{background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:22px;padding:clamp(22px,5vw,42px);box-shadow:var(--shadow)}h1{font:800 clamp(25px,5vw,34px) Sora,sans-serif;letter-spacing:-.04em;margin:0 0 9px}.intro{color:var(--soft);line-height:1.65;margin:0 0 26px}.field{margin:14px 0}label{display:block;font-weight:700;font-size:12px;color:var(--soft);margin-bottom:7px}input{width:100%;font:14px Inter,sans-serif;padding:13px 14px;border:1px solid var(--border);border-radius:11px;background:rgba(255,255,255,.86);color:var(--ink)}input:focus{outline:3px solid rgba(36,119,201,.18);border-color:var(--blue)}button,.action{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;background:linear-gradient(120deg,#318dd4,#1766b0);color:white;padding:12px 17px;text-decoration:none;font:700 13px Inter,sans-serif;cursor:pointer}.submit{width:100%;margin-top:9px}.submit:disabled{opacity:.6;cursor:wait}.status{min-height:20px;margin-top:12px;color:#b42318;font-size:13px}.workspace[hidden],#loginCard[hidden]{display:none}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:26px}.badge{display:inline-flex;border-radius:99px;padding:8px 13px;background:#e1f1ff;color:#18578a;font-size:12px;font-weight:700;white-space:nowrap}.logout{background:rgba(255,255,255,.88);color:var(--soft);border:1px solid var(--border)}.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.tool{padding:20px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.72)}.tool h2{font:700 16px Sora,sans-serif;margin:0 0 7px}.tool p{color:var(--soft);font-size:13px;line-height:1.6;margin:0 0 16px}.tool .action{width:100%}.small{color:#526b83;font-size:12px;line-height:1.6;margin-top:22px}@media(max-width:520px){.shell{margin:24px auto}.top{flex-direction:column}.logout{align-self:flex-start}}
-    .analytics{margin-top:18px;padding:20px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.78)}
+    .shell{width:min(1180px,calc(100% - 32px));margin:5vh auto}
+    .analytics{margin-top:18px;padding:22px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.82)}
     .analytics-head,.analytics-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
     .analytics-head{margin-bottom:16px}.analytics-head h2{font:700 19px Sora,sans-serif;margin:0}
     .analytics .intro{font-size:12px;margin:5px 0 0}.analytics-refresh{padding:9px 13px}
@@ -20,20 +21,25 @@
     .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
     .stat{padding:13px;border:1px solid var(--border);border-radius:12px;background:#fff}
     .stat span{display:block;color:var(--soft);font-size:11px}.stat strong{display:block;margin-top:6px;font:700 19px Sora,sans-serif;overflow-wrap:anywhere}
-    .analytics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px}
-    .analytics-box{min-width:0;padding:15px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.78)}
-    .analytics-box h3{font:700 13px Sora,sans-serif;margin:0}.analytics-box p{color:var(--soft);font-size:11px;line-height:1.5;margin:6px 0 12px}
-    .daily-chart{height:126px;display:flex;align-items:flex-end;gap:3px;padding:4px 0}
-    .daily-col{height:100%;flex:1;min-width:2px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px}
-    .daily-bar{width:100%;max-width:12px;min-height:2px;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,#54a7ed,#365fe2)}
-    .daily-label{height:10px;color:var(--muted);font-size:8px;white-space:nowrap}
+    .analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+    .analytics-box{min-width:0;padding:18px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.88);box-shadow:0 7px 20px rgba(16,55,91,.045)}
+    .analytics-box h3{font:700 14px Sora,sans-serif;margin:0}.analytics-box p{color:var(--soft);font-size:11px;line-height:1.55;margin:6px 0 12px}
+    .daily-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 4px}
+    .daily-summary div{padding:10px 11px;border-radius:11px;background:#f2f7fd;border:1px solid #e3edf7}
+    .daily-summary span{display:block;color:var(--muted);font-size:10px}.daily-summary strong{display:block;margin-top:4px;font:700 16px Sora,sans-serif;color:var(--ink)}
+    .daily-summary strong.positive{color:#12805c}.daily-summary strong.negative{color:#c2414b}
+    .daily-chart{height:240px;position:relative;border-radius:12px;background:linear-gradient(180deg,#f8fbff,#fff);overflow:hidden}
+    .daily-chart svg{width:100%;height:100%;display:block;overflow:visible}.chart-grid{stroke:#dce7f2;stroke-width:1;stroke-dasharray:3 5}.chart-area{fill:url(#dailyFill)}.chart-line{fill:none;stroke:#2678d2;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.chart-point{fill:#fff;stroke:#2678d2;stroke-width:2.5;cursor:pointer}.chart-point:hover,.chart-point:focus{fill:#2678d2;stroke:#fff;stroke-width:3;outline:none}.chart-y-label,.chart-x-label{fill:#7489a0;font:10px Inter,sans-serif}.chart-empty{height:100%;display:grid;place-items:center;color:var(--muted);font-size:12px}
+    .metric-track{height:7px;background:#edf3f9;border-radius:99px;overflow:hidden;margin-top:6px}.metric-fill{height:100%;min-width:2px;border-radius:inherit;background:linear-gradient(90deg,#46a3ec,#465fe0)}
+    .metric-detail{display:block;color:var(--muted);font-size:10px;margin-top:3px}.usage-row,.table-row{align-items:center}.usage-row>span:first-child,.table-row>span:first-child{min-width:80px}.metric-item{min-width:0;flex:1}
     .usage-list,.table-list,.error-list{display:grid;gap:8px}
     .usage-row,.table-row{display:flex;justify-content:space-between;gap:10px;color:var(--soft);font-size:12px}
     .usage-row strong,.table-row strong{color:var(--ink);text-align:right}
     .error-row{padding:9px 0;border-top:1px solid var(--border);font-size:11px;line-height:1.5;overflow-wrap:anywhere}
     .error-row:first-child{border-top:0}.error-row strong{display:block;color:var(--ink)}.error-row span{color:var(--soft)}
     .setup-link{color:#1766b0;font-weight:700}
-    @media(max-width:520px){.analytics{padding:15px}.analytics-head{align-items:flex-start}.analytics-head h2{font-size:17px}.analytics-refresh{padding:8px 10px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.analytics-grid{grid-template-columns:1fr}.daily-chart{height:210px}}
+    @media(max-width:520px){.shell{width:calc(100% - 20px);margin:18px auto}.analytics{padding:15px}.analytics-head{align-items:flex-start}.analytics-head h2{font-size:17px}.analytics-refresh{padding:8px 10px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.daily-chart{height:190px}.daily-summary{gap:5px}.daily-summary div{padding:8px}.daily-summary strong{font-size:14px}}
   </style>
 </head>
 <body>
@@ -70,7 +76,7 @@
           <div class="stat"><span>Browser errors · 24h</span><strong id="metricErrors">—</strong></div>
         </div>
         <div class="analytics-grid">
-          <section class="analytics-box"><h3>Daily users · 30 days</h3><p>Unique signed-in users recorded on each day.</p><div class="daily-chart" id="dailyChart" aria-label="Daily users chart"></div></section>
+          <section class="analytics-box"><h3>Daily active users · last 30 days</h3><p>Unique signed-in users seen each day. Hover or focus a point for the exact date and count.</p><div class="daily-summary"><div><span>30-day average</span><strong id="dailyAverage">—</strong></div><div><span>Peak day</span><strong id="dailyPeak">—</strong></div><div><span>Last 7 days</span><strong id="dailyTrend">—</strong></div></div><div class="daily-chart" id="dailyChart" role="group" aria-label="Daily active users over the last 30 days"></div></section>
           <section class="analytics-box"><h3>Supabase requests</h3><p id="usagePeriod">Counts across Auth, Realtime, REST and Storage.</p><div class="usage-list" id="usageList"></div></section>
           <section class="analytics-box"><h3>Firebase / Firestore · this month</h3><p>Emergency Chat and E-Library document operations and current storage.</p><div class="usage-list" id="firebaseList"></div></section>
           <section class="analytics-box"><h3>Largest database tables</h3><p>Current table size, including indexes.</p><div class="table-list" id="tableList"></div></section>
@@ -112,6 +118,27 @@
       parent.append(row);
       return row;
     }
+    function addMetricRow(parent, label, value, ratio, detail = '') {
+      const row = addTextRow(parent, label, value, 'usage-row');
+      const meter = document.createElement('div');
+      meter.className = 'metric-track';
+      meter.setAttribute('aria-hidden', 'true');
+      const fill = document.createElement('div');
+      fill.className = 'metric-fill';
+      fill.style.width = Math.max(0, Math.min(100, ratio)) + '%';
+      meter.append(fill);
+      const item = document.createElement('div');
+      item.className = 'metric-item';
+      item.append(meter);
+      if (detail) {
+        const note = document.createElement('span');
+        note.className = 'metric-detail';
+        note.textContent = detail;
+        item.append(note);
+      }
+      row.append(item);
+      return row;
+    }
     function addErrorRow(parent, title, detail) {
       const row = document.createElement('div');
       row.className = 'error-row';
@@ -140,22 +167,78 @@
 
       const chart = $('dailyChart');
       chart.replaceChildren();
-      const peak = Math.max(1, ...days.map(day => Number(day.users) || 0));
-      days.forEach((day, index) => {
-        const column = document.createElement('div');
-        column.className = 'daily-col';
-        const value = Number(day.users) || 0;
-        column.title = day.date + ': ' + formatCount(value) + ' users';
-        const bar = document.createElement('div');
-        bar.className = 'daily-bar';
-        bar.style.height = (value ? Math.max(7, value / peak * 100) : 2) + '%';
-        const label = document.createElement('span');
-        label.className = 'daily-label';
-        label.textContent = index % 7 === 0 || index === days.length - 1
-          ? String(new Date(day.date + 'T12:00:00Z').getUTCDate()) : '';
-        column.append(bar, label);
-        chart.append(column);
-      });
+      const values = days.map(day => Number(day.users) || 0);
+      const totalUsers = values.reduce((sum, value) => sum + value, 0);
+      const peak = Math.max(0, ...values);
+      const peakIndex = values.indexOf(peak);
+      $('dailyAverage').textContent = days.length ? (totalUsers / days.length).toFixed(1) : '—';
+      $('dailyPeak').textContent = peakIndex >= 0 && days[peakIndex]
+        ? formatCount(peak) + ' · ' + new Date(days[peakIndex].date + 'T12:00:00Z').toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' })
+        : '—';
+      const lastWeek = values.slice(-7).reduce((sum, value) => sum + value, 0);
+      const priorWeek = values.slice(-14, -7).reduce((sum, value) => sum + value, 0);
+      const trend = $('dailyTrend');
+      trend.classList.remove('positive', 'negative');
+      if (values.length >= 14 && priorWeek > 0) {
+        const change = ((lastWeek - priorWeek) / priorWeek) * 100;
+        trend.textContent = (change > 0 ? '+' : '') + change.toFixed(0) + '%';
+        if (change > 0) trend.classList.add('positive');
+        if (change < 0) trend.classList.add('negative');
+        trend.title = formatCount(lastWeek) + ' users in the latest 7 days vs ' + formatCount(priorWeek) + ' in the 7 days before';
+      } else {
+        trend.textContent = values.length ? formatCount(lastWeek) + ' users' : '—';
+        trend.title = 'Not enough previous data for a week-over-week comparison.';
+      }
+      if (!days.length) {
+        const empty = document.createElement('div');
+        empty.className = 'chart-empty';
+        empty.textContent = 'No daily activity data available.';
+        chart.append(empty);
+      } else {
+        const svgNS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('viewBox', '0 0 720 220');
+        svg.setAttribute('preserveAspectRatio', 'none');
+        const defs = document.createElementNS(svgNS, 'defs');
+        const gradient = document.createElementNS(svgNS, 'linearGradient');
+        gradient.id = 'dailyFill'; gradient.setAttribute('x1', '0'); gradient.setAttribute('x2', '0');
+        gradient.setAttribute('y1', '0'); gradient.setAttribute('y2', '1');
+        const topStop = document.createElementNS(svgNS, 'stop'); topStop.setAttribute('offset', '0%'); topStop.setAttribute('stop-color', '#4c9be5'); topStop.setAttribute('stop-opacity', '.25');
+        const bottomStop = document.createElementNS(svgNS, 'stop'); bottomStop.setAttribute('offset', '100%'); bottomStop.setAttribute('stop-color', '#4c9be5'); bottomStop.setAttribute('stop-opacity', '.015');
+        gradient.append(topStop, bottomStop); defs.append(gradient); svg.append(defs);
+        const left = 42, right = 704, top = 15, bottom = 180;
+        const maxValue = Math.max(1, peak);
+        [0, .5, 1].forEach(fraction => {
+          const y = bottom - fraction * (bottom - top);
+          const line = document.createElementNS(svgNS, 'line');
+          line.setAttribute('x1', left); line.setAttribute('x2', right); line.setAttribute('y1', y); line.setAttribute('y2', y); line.setAttribute('class', 'chart-grid'); svg.append(line);
+          const label = document.createElementNS(svgNS, 'text');
+          label.setAttribute('x', left - 9); label.setAttribute('y', y + 4); label.setAttribute('text-anchor', 'end'); label.setAttribute('class', 'chart-y-label');
+          label.textContent = formatCount(Math.round(maxValue * fraction)); svg.append(label);
+        });
+        const points = days.map((day, index) => ({
+          day, value: values[index],
+          x: days.length === 1 ? (left + right) / 2 : left + (index / (days.length - 1)) * (right - left),
+          y: bottom - (values[index] / maxValue) * (bottom - top)
+        }));
+        const linePath = points.map((point, index) => (index ? 'L' : 'M') + point.x + ' ' + point.y).join(' ');
+        const area = document.createElementNS(svgNS, 'path'); area.setAttribute('d', linePath + ' L' + points[points.length - 1].x + ' ' + bottom + ' L' + points[0].x + ' ' + bottom + ' Z'); area.setAttribute('class', 'chart-area'); svg.append(area);
+        const line = document.createElementNS(svgNS, 'path'); line.setAttribute('d', linePath); line.setAttribute('class', 'chart-line'); svg.append(line);
+        points.forEach((point, index) => {
+          if (index % 7 === 0 || index === points.length - 1) {
+            const dateLabel = document.createElementNS(svgNS, 'text');
+            dateLabel.setAttribute('x', point.x); dateLabel.setAttribute('y', 205); dateLabel.setAttribute('text-anchor', index === 0 ? 'start' : index === points.length - 1 ? 'end' : 'middle'); dateLabel.setAttribute('class', 'chart-x-label');
+            dateLabel.textContent = new Date(point.day.date + 'T12:00:00Z').toLocaleDateString(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' }); svg.append(dateLabel);
+          }
+          const circle = document.createElementNS(svgNS, 'circle');
+          circle.setAttribute('cx', point.x); circle.setAttribute('cy', point.y); circle.setAttribute('r', index === peakIndex ? '5' : '3.5'); circle.setAttribute('class', 'chart-point'); circle.setAttribute('tabindex', '0');
+          const dateText = new Date(point.day.date + 'T12:00:00Z').toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+          const detail = dateText + ': ' + formatCount(point.value) + ' active users';
+          circle.setAttribute('aria-label', detail);
+          const title = document.createElementNS(svgNS, 'title'); title.textContent = detail; circle.append(title); svg.append(circle);
+        });
+        chart.append(svg);
+      }
 
       const usage = $('usageList');
       usage.replaceChildren();
@@ -164,8 +247,13 @@
         : 'Counts across Auth, Realtime, REST and Storage.';
       if (provider.configured) {
         const requests = provider.requests || {};
-        [['Auth', requests.auth], ['Realtime', requests.realtime], ['REST', requests.rest], ['Storage', requests.storage]]
-          .forEach(([label, value]) => addTextRow(usage, label, formatCount(value), 'usage-row'));
+        const requestRows = [['Auth', requests.auth], ['Realtime', requests.realtime], ['REST', requests.rest], ['Storage', requests.storage]];
+        const requestTotal = requestRows.reduce((sum, [, value]) => sum + (Number(value) || 0), 0);
+        requestRows.forEach(([label, value]) => {
+          const count = Number(value) || 0;
+          addMetricRow(usage, label, formatCount(count), requestTotal ? count / requestTotal * 100 : 0,
+            requestTotal ? ((count / requestTotal) * 100).toFixed(1) + '% of requests' : 'No requests in this period');
+        });
       } else {
         const note = document.createElement('p');
         note.textContent = provider.note || 'Supabase request metrics are not configured.';
@@ -198,16 +286,23 @@
           firebase.append(link);
           return;
         }
-        addTextRow(firebase, name + ' reads', formatCount(metrics.reads), 'usage-row');
-        addTextRow(firebase, name + ' writes', formatCount(metrics.writes), 'usage-row');
-        addTextRow(firebase, name + ' deletes', formatCount(metrics.deletes), 'usage-row');
+        const ops = [['reads', metrics.reads], ['writes', metrics.writes], ['deletes', metrics.deletes]];
+        const opTotal = ops.reduce((sum, [, value]) => sum + (Number(value) || 0), 0);
+        ops.forEach(([operation, value]) => {
+          const count = Number(value) || 0;
+          addMetricRow(firebase, name + ' ' + operation, formatCount(count), opTotal ? count / opTotal * 100 : 0,
+            opTotal ? ((count / opTotal) * 100).toFixed(1) + '% of operations' : 'No operations reported');
+        });
         addTextRow(firebase, name + ' storage', formatBytes(metrics.storage_bytes), 'usage-row');
       });
 
       const tables = $('tableList');
       tables.replaceChildren();
-      (portal.largest_tables || []).forEach(table => addTextRow(
-        tables, 'public.' + table.table, formatBytes(table.bytes), 'table-row'
+      const largestTables = portal.largest_tables || [];
+      const largestBytes = Math.max(1, ...largestTables.map(table => Number(table.bytes) || 0));
+      largestTables.forEach(table => addMetricRow(
+        tables, 'public.' + table.table, formatBytes(table.bytes), (Number(table.bytes) || 0) / largestBytes * 100,
+        largestBytes > 1 ? ((Number(table.bytes) / largestBytes) * 100).toFixed(1) + '% of largest table' : ''
       ));
       if (!tables.childElementCount) {
         const empty = document.createElement('p');
