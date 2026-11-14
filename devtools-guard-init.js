@@ -1,5 +1,5 @@
 import { createStaffClient } from './supabase-config.js';
-import { installDeveloperToolsGuard } from '../devtools-guard.js';
+import { installDeveloperToolsGuard } from './devtools-guard.js';
 
 const staffClient = createStaffClient();
 installDeveloperToolsGuard(async () => {
