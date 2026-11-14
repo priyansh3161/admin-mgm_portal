@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/jpeg" href="../mgmcoet-mark.jpg">
+  <title>Staff Console | MGMCOET</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--bg:#eef3fd;--surface:rgba(248,252,255,.91);--ink:#10233f;--soft:#526b83;--muted:#7188a0;--blue:#2477c9;--border:rgba(35,91,135,.2);--shadow:0 24px 70px rgba(6,38,72,.24)}
+    *{box-sizing:border-box}body{position:relative;isolation:isolate;margin:0;min-height:100vh;background:#cde7f8;color:var(--ink);font:14px Inter,sans-serif}body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(6,31,58,.20),rgba(12,90,142,.04) 55%,rgba(5,36,68,.16)),url("../bg%204.jpg") center/cover no-repeat}.shell{width:min(900px,calc(100% - 32px));margin:8vh auto}.brand{font:800 12px Sora,sans-serif;letter-spacing:.14em;color:#f5fbff;text-shadow:0 2px 12px rgba(8,38,67,.72);text-transform:uppercase;margin-bottom:18px}.card{background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:22px;padding:clamp(22px,5vw,42px);box-shadow:var(--shadow)}h1{font:800 clamp(25px,5vw,34px) Sora,sans-serif;letter-spacing:-.04em;margin:0 0 9px}.intro{color:var(--soft);line-height:1.65;margin:0 0 26px}.field{margin:14px 0}label{display:block;font-weight:700;font-size:12px;color:var(--soft);margin-bottom:7px}input{width:100%;font:14px Inter,sans-serif;padding:13px 14px;border:1px solid var(--border);border-radius:11px;background:rgba(255,255,255,.86);color:var(--ink)}input:focus{outline:3px solid rgba(36,119,201,.18);border-color:var(--blue)}button,.action{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;background:linear-gradient(120deg,#318dd4,#1766b0);color:white;padding:12px 17px;text-decoration:none;font:700 13px Inter,sans-serif;cursor:pointer}.submit{width:100%;margin-top:9px}.submit:disabled{opacity:.6;cursor:wait}.status{min-height:20px;margin-top:12px;color:#b42318;font-size:13px}.workspace[hidden],#loginCard[hidden]{display:none}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:26px}.badge{display:inline-flex;border-radius:99px;padding:8px 13px;background:#e1f1ff;color:#18578a;font-size:12px;font-weight:700;white-space:nowrap}.logout{background:rgba(255,255,255,.88);color:var(--soft);border:1px solid var(--border)}.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.tool{padding:20px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.72)}.tool h2{font:700 16px Sora,sans-serif;margin:0 0 7px}.tool p{color:var(--soft);font-size:13px;line-height:1.6;margin:0 0 16px}.tool .action{width:100%}.small{color:#526b83;font-size:12px;line-height:1.6;margin-top:22px}@media(max-width:520px){.shell{margin:24px auto}.top{flex-direction:column}.logout{align-self:flex-start}}
+    .analytics{margin-top:18px;padding:20px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.78)}
+    .analytics-head,.analytics-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .analytics-head{margin-bottom:16px}.analytics-head h2{font:700 19px Sora,sans-serif;margin:0}
+    .analytics .intro{font-size:12px;margin:5px 0 0}.analytics-refresh{padding:9px 13px}
+    .analytics-status{min-height:18px;margin:0 0 12px;color:var(--soft);font-size:12px}
+    .analytics-status.error{color:#b42318}
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+    .stat{padding:13px;border:1px solid var(--border);border-radius:12px;background:#fff}
+    .stat span{display:block;color:var(--soft);font-size:11px}.stat strong{display:block;margin-top:6px;font:700 19px Sora,sans-serif;overflow-wrap:anywhere}
+    .analytics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:12px}
+    .analytics-box{min-width:0;padding:15px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.78)}
+    .analytics-box h3{font:700 13px Sora,sans-serif;margin:0}.analytics-box p{color:var(--soft);font-size:11px;line-height:1.5;margin:6px 0 12px}
+    .daily-chart{height:126px;display:flex;align-items:flex-end;gap:3px;padding:4px 0}
+    .daily-col{height:100%;flex:1;min-width:2px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px}
+    .daily-bar{width:100%;max-width:12px;min-height:2px;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,#54a7ed,#365fe2)}
+    .daily-label{height:10px;color:var(--muted);font-size:8px;white-space:nowrap}
+    .usage-list,.table-list,.error-list{display:grid;gap:8px}
+    .usage-row,.table-row{display:flex;justify-content:space-between;gap:10px;color:var(--soft);font-size:12px}
+    .usage-row strong,.table-row strong{color:var(--ink);text-align:right}
+    .error-row{padding:9px 0;border-top:1px solid var(--border);font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+    .error-row:first-child{border-top:0}.error-row strong{display:block;color:var(--ink)}.error-row span{color:var(--soft)}
+    .setup-link{color:#1766b0;font-weight:700}
+    @media(max-width:520px){.analytics{padding:15px}.analytics-head{align-items:flex-start}.analytics-head h2{font-size:17px}.analytics-refresh{padding:8px 10px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="brand">MGMCOET · Staff Console</div>
+    <section class="card" id="loginCard">
+      <h1>Staff sign in</h1>
+      <p class="intro">Private entry for approved academic admins and subadmins.</p>
+      <form id="loginForm">
+        <div class="field"><label for="email">Staff email</label><input id="email" type="email" autocomplete="username" required></div>
+        <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
+        <button class="submit" id="signIn" type="submit">Sign in</button>
+      </form>
+      <div class="status" id="status" role="status"></div>
+    </section>
+    <section class="card workspace" id="workspace" hidden>
+      <header class="top"><div><h1>Academic staff dashboard</h1><p class="intro" id="welcome" style="margin-bottom:0"></p></div><div style="display:flex;gap:9px;align-items:center"><span class="badge" id="roleBadge"></span><button class="logout" id="logout" type="button">Sign out</button></div></header>
+      <div class="tools">
+        <article class="tool"><h2>Academic content</h2><p>Create subjects and chapters, upload videos and notes, publish assignments and notices.</p><a class="action" href="./subadmin.html">Open content manager</a></article>
+        <article class="tool" id="adminTools" hidden><h2>Primary admin tools</h2><p>Review E-Library uploads, manage PYQs and grant or revoke academic staff roles inside the content manager.</p><a class="action" href="./subadmin.html">Open admin controls</a></article>
+      </div>
+      <section class="analytics" id="analyticsPanel" hidden aria-labelledby="analyticsHeading">
+        <header class="analytics-head">
+          <div><h2 id="analyticsHeading">Analytics</h2><p class="intro">Portal activity, database size and recent issues.</p></div>
+          <button class="analytics-refresh" id="analyticsRefresh" type="button">Refresh</button>
+        </header>
+        <p class="analytics-status" id="analyticsStatus" role="status">Loading analytics…</p>
+        <div class="stat-grid">
+          <div class="stat"><span>Users today</span><strong id="metricToday">—</strong></div>
+          <div class="stat"><span>Users this month</span><strong id="metricMonthUsers">—</strong></div>
+          <div class="stat"><span>Page visits this month</span><strong id="metricMonthViews">—</strong></div>
+          <div class="stat"><span>Database size</span><strong id="metricDatabase">—</strong></div>
+          <div class="stat"><span>DB change vs first monthly sample</span><strong id="metricDatabaseChange">—</strong></div>
+          <div class="stat"><span>Browser errors · 24h</span><strong id="metricErrors">—</strong></div>
+        </div>
+        <div class="analytics-grid">
+          <section class="analytics-box"><h3>Daily users · 30 days</h3><p>Unique signed-in users recorded on each day.</p><div class="daily-chart" id="dailyChart" aria-label="Daily users chart"></div></section>
+          <section class="analytics-box"><h3>Supabase requests</h3><p id="usagePeriod">Counts across Auth, Realtime, REST and Storage.</p><div class="usage-list" id="usageList"></div></section>
+          <section class="analytics-box"><h3>Firebase / Firestore · this month</h3><p>Emergency Chat and E-Library document operations and current storage.</p><div class="usage-list" id="firebaseList"></div></section>
+          <section class="analytics-box"><h3>Largest database tables</h3><p>Current table size, including indexes.</p><div class="table-list" id="tableList"></div></section>
+          <section class="analytics-box"><h3>Recent issues</h3><p>Browser errors and Supabase service errors.</p><div class="error-list" id="errorList"></div></section>
+        </div>
+      </section>
+      <p class="small">Access is checked against the Supabase <code>academic_staff</code> role. The content manager applies the same role permissions.</p>
+    </section>
+  </main>
+  <script type="module" src="./devtools-guard-init.js"></script>
+  <script type="module">
+    import { createStaffClient } from './supabase-config.js';
+    const supabase = createStaffClient();
+    const $ = id => document.getElementById(id);
+    function showLogin(message = '') {
+      $('workspace').hidden = true;
+      $('analyticsPanel').hidden = true;
+      $('loginCard').hidden = false;
+      $('status').textContent = message;
+    }
+    const formatCount = value => Number(value || 0).toLocaleString();
+    function formatBytes(value) {
+      const bytes = Number(value);
+      if (!Number.isFinite(bytes)) return '—';
+      const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+      let amount = Math.abs(bytes);
+      let unit = 0;
+      while (amount >= 1024 && unit < units.length - 1) { amount /= 1024; unit++; }
+      return (bytes < 0 ? '-' : '') + amount.toFixed(unit ? 1 : 0) + ' ' + units[unit];
+    }
+    function addTextRow(parent, label, value, className = '') {
+      const row = document.createElement('div');
+      row.className = className;
+      const left = document.createElement('span');
+      left.textContent = label;
+      const right = document.createElement('strong');
+      right.textContent = value;
+      row.append(left, right);
+      parent.append(row);
+      return row;
+    }
+    function addErrorRow(parent, title, detail) {
+      const row = document.createElement('div');
+      row.className = 'error-row';
+      const heading = document.createElement('strong');
+      heading.textContent = title;
+      const message = document.createElement('span');
+      message.textContent = detail;
+      row.append(heading, message);
+      parent.append(row);
+    }
+    function renderAnalytics(payload) {
+      const portal = payload.portal || {};
+      const provider = payload.provider || {};
+      const days = Array.isArray(portal.daily_active_users) ? portal.daily_active_users : [];
+      const today = days.length ? days[days.length - 1].users : 0;
+      $('metricToday').textContent = formatCount(today);
+      $('metricMonthUsers').textContent = formatCount(portal.active_users_month_to_date);
+      $('metricMonthViews').textContent = formatCount(portal.page_views_month_to_date);
+      $('metricDatabase').textContent = formatBytes(portal.database_bytes);
+      $('metricErrors').textContent = formatCount(portal.client_errors_24h);
+      const currentBytes = Number(portal.database_bytes);
+      const baselineBytes = portal.database_month_start_bytes == null ? NaN : Number(portal.database_month_start_bytes);
+      $('metricDatabaseChange').textContent = Number.isFinite(currentBytes) && Number.isFinite(baselineBytes)
+        ? (currentBytes - baselineBytes >= 0 ? '+' : '') + formatBytes(currentBytes - baselineBytes)
+        : 'No baseline yet';
+
+      const chart = $('dailyChart');
+      chart.replaceChildren();
+      const peak = Math.max(1, ...days.map(day => Number(day.users) || 0));
+      days.forEach((day, index) => {
+        const column = document.createElement('div');
+        column.className = 'daily-col';
+        const value = Number(day.users) || 0;
+        column.title = day.date + ': ' + formatCount(value) + ' users';
+        const bar = document.createElement('div');
+        bar.className = 'daily-bar';
+        bar.style.height = (value ? Math.max(7, value / peak * 100) : 2) + '%';
+        const label = document.createElement('span');
+        label.className = 'daily-label';
+        label.textContent = index % 7 === 0 || index === days.length - 1
+          ? String(new Date(day.date + 'T12:00:00Z').getUTCDate()) : '';
+        column.append(bar, label);
+        chart.append(column);
+      });
+
+      const usage = $('usageList');
+      usage.replaceChildren();
+      $('usagePeriod').textContent = provider.configured
+        ? 'Total requests in the last ' + (provider.usage_period || '7 days') + '.'
+        : 'Counts across Auth, Realtime, REST and Storage.';
+      if (provider.configured) {
+        const requests = provider.requests || {};
+        [['Auth', requests.auth], ['Realtime', requests.realtime], ['REST', requests.rest], ['Storage', requests.storage]]
+          .forEach(([label, value]) => addTextRow(usage, label, formatCount(value), 'usage-row'));
+      } else {
+        const note = document.createElement('p');
+        note.textContent = provider.note || 'Supabase request metrics are not configured.';
+        usage.append(note);
+        const link = document.createElement('a');
+        link.className = 'setup-link';
+        link.href = '../ADMIN_ANALYTICS_SETUP.md';
+        link.textContent = 'Analytics setup';
+        usage.append(link);
+      }
+      if (provider.note && provider.configured) {
+        const note = document.createElement('p');
+        note.textContent = provider.note;
+        usage.append(note);
+      }
+
+      const firebase = $('firebaseList');
+      firebase.replaceChildren();
+      const firebaseMetrics = payload.firebase || {};
+      [
+        ['Emergency Chat', firebaseMetrics.emergency_chat],
+        ['E-Library', firebaseMetrics.elibrary]
+      ].forEach(([name, metrics]) => {
+        if (!metrics?.configured) {
+          addErrorRow(firebase, name, metrics?.note || 'Usage is not configured.');
+          const link = document.createElement('a');
+          link.className = 'setup-link';
+          link.href = '../ADMIN_ANALYTICS_SETUP.md';
+          link.textContent = 'Analytics setup';
+          firebase.append(link);
+          return;
+        }
+        addTextRow(firebase, name + ' reads', formatCount(metrics.reads), 'usage-row');
+        addTextRow(firebase, name + ' writes', formatCount(metrics.writes), 'usage-row');
+        addTextRow(firebase, name + ' deletes', formatCount(metrics.deletes), 'usage-row');
+        addTextRow(firebase, name + ' storage', formatBytes(metrics.storage_bytes), 'usage-row');
+      });
+
+      const tables = $('tableList');
+      tables.replaceChildren();
+      (portal.largest_tables || []).forEach(table => addTextRow(
+        tables, 'public.' + table.table, formatBytes(table.bytes), 'table-row'
+      ));
+      if (!tables.childElementCount) {
+        const empty = document.createElement('p');
+        empty.textContent = 'No table data available.';
+        tables.append(empty);
+      }
+
+      const issues = $('errorList');
+      issues.replaceChildren();
+      (portal.recent_client_errors || []).forEach(item => {
+        const time = item.created_at ? new Date(item.created_at).toLocaleString() : '';
+        addErrorRow(issues, (item.page || 'Portal') + ' · ' + time, item.message || 'Browser error');
+      });
+      (provider.errors || []).forEach(item => {
+        const time = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
+        const label = item.source === 'postgres_logs' ? 'Database'
+          : (item.source === 'function_logs' || item.source === 'function_edge_logs' ? 'Edge Function' : 'API');
+        const code = item.status ? 'HTTP ' + item.status : (item.sqlstate ? 'SQLSTATE ' + item.sqlstate : item.severity_text || 'Error');
+        addErrorRow(issues, label + ' · ' + code + ' · ' + time, item.path || item.source || 'Supabase service error');
+      });
+      if (!issues.childElementCount) addErrorRow(issues, 'No recent issues', 'No browser or provider errors were recorded.');
+      if (!provider.configured) {
+        addErrorRow(issues, 'Supabase logs not connected', 'Add the Management API token to enable provider error details.');
+      } else if (provider.note) {
+        addErrorRow(issues, 'Some Supabase metrics unavailable', provider.note);
+      }
+    }
+    async function loadAnalytics() {
+      const button = $('analyticsRefresh');
+      const status = $('analyticsStatus');
+      button.disabled = true;
+      status.classList.remove('error');
+      status.textContent = 'Loading analytics…';
+      try {
+        const { data, error } = await supabase.functions.invoke('admin-analytics', { body: { action: 'dashboard' } });
+        if (error) throw error;
+        if (data?.error) throw new Error(data.error);
+        renderAnalytics(data || {});
+        status.textContent = 'Updated ' + new Date().toLocaleTimeString() + '.';
+      } catch (error) {
+        status.classList.add('error');
+        status.textContent = error.message || 'Analytics could not be loaded. Check the function deployment and SQL setup.';
+      } finally { button.disabled = false; }
+    }
+    $('analyticsRefresh').addEventListener('click', loadAnalytics);
+    async function loadStaffDashboard() {
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!session) { showLogin(); return; }
+      const { data: staff, error } = await supabase.from('academic_staff').select('role').eq('user_id', session.user.id).maybeSingle();
+      if (error || !staff || !['admin', 'subadmin'].includes(staff.role)) {
+        await supabase.auth.signOut();
+        showLogin('This account is not approved for academic staff access.');
+        return;
+      }
+      $('loginCard').hidden = true;
+      $('workspace').hidden = false;
+      $('welcome').textContent = `Signed in as ${session.user.email || 'academic staff'}. Choose a staff tool below.`;
+      $('roleBadge').textContent = staff.role === 'admin' ? 'Primary admin' : 'Subadmin';
+      $('adminTools').hidden = staff.role !== 'admin';
+      $('analyticsPanel').hidden = staff.role !== 'admin';
+      if (staff.role === 'admin') loadAnalytics();
+    }
+    $('loginForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const button = $('signIn');
+      button.disabled = true;
+      $('status').textContent = 'Checking staff access…';
+      try {
+        const { error } = await supabase.auth.signInWithPassword({ email: $('email').value.trim(), password: $('password').value });
+        if (error) throw error;
+        await loadStaffDashboard();
+      } catch (error) {
+        showLogin(error.message || 'Sign in failed.');
+      } finally { button.disabled = false; }
+    });
+    $('logout').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      showLogin('Signed out from staff console.');
+    });
+    loadStaffDashboard().catch(error => showLogin(`${error.message || error}. Check the Supabase academic setup.`));
+  </script>
+</body>
+</html>
