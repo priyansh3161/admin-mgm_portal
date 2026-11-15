@@ -1,4 +1,4 @@
-﻿    import { createStaffClient } from './supabase-config.js';
+    import { createStaffClient } from './supabase-config.js';
     import { getCloudinaryUploadSignature, uploadSignedCloudinaryFile } from './cloudinary-upload.js';
     const supabase = createStaffClient();
     const branches = ['Computer Science & Engineering','Information Technology','Electronics & Communication','Electrical Engineering','Mechanical Engineering','Civil Engineering','Other'];
@@ -30,7 +30,7 @@
         const pending=data?.requests||[];
         state.resourceRequests=pending;
         if(!pending.length){list.innerHTML='<div class="resource-empty">No pending E-Library uploads.</div>';message('resourceRequestsStatus','');return;}
-        list.innerHTML=pending.map(item=>{const title=htmlText(item.title||'Untitled resource'),author=htmlText(item.author||'Student Contributor'),category=htmlText(item.category||'Notes'),url=safeResourceUrl(item.link);return '<article class="resource-request"><div><strong>'+title+'</strong><p>'+author+' Â· '+category+'</p>'+(url?'<a href="'+htmlText(url)+'" target="_blank" rel="noopener">Review uploaded file</a>':'<p>File link is invalid or unavailable.</p>')+'</div><div class="record-actions"><button type="button" data-approve-resource="'+htmlText(item.id)+'">Accept</button><button type="button" data-reject-resource="'+htmlText(item.id)+'">Reject</button></div></article>';}).join('');
+        list.innerHTML=pending.map(item=>{const title=htmlText(item.title||'Untitled resource'),author=htmlText(item.author||'Student Contributor'),category=htmlText(item.category||'Notes'),url=safeResourceUrl(item.link);return '<article class="resource-request"><div><strong>'+title+'</strong><p>'+author+'  |  '+category+'</p>'+(url?'<a href="'+htmlText(url)+'" target="_blank" rel="noopener">Review uploaded file</a>':'<p>File link is invalid or unavailable.</p>')+'</div><div class="record-actions"><button type="button" data-approve-resource="'+htmlText(item.id)+'">Accept</button><button type="button" data-reject-resource="'+htmlText(item.id)+'">Reject</button></div></article>';}).join('');
         list.querySelectorAll('[data-approve-resource]').forEach(button=>button.addEventListener('click',()=>reviewResource(button.dataset.approveResource,true,button)));
         list.querySelectorAll('[data-reject-resource]').forEach(button=>button.addEventListener('click',()=>reviewResource(button.dataset.rejectResource,false,button)));
         message('resourceRequestsStatus',pending.length+' pending upload'+(pending.length===1?'':'s')+'.');
@@ -47,7 +47,7 @@
         if(error)throw error;if(data?.error)throw new Error(data.error);
         state.confessionRequests=data?.requests||[];
         if(!state.confessionRequests.length){list.innerHTML='<div class="resource-empty">No pending confessions.</div>';message('confessionRequestsStatus','');return;}
-        list.innerHTML=state.confessionRequests.map(post=>{const media=safeConfessionMediaUrl(post.media_url),body=htmlText(post.body||'Attachment only'),tag=htmlText(post.tag||'Confession'),created=htmlText(post.created_at?new Date(post.created_at).toLocaleString():'');return '<article class="record-row"><div><strong>'+tag+' Â· '+created+'</strong><p style="white-space:pre-wrap">'+body+'</p>'+(media?'<p><a href="'+htmlText(media)+'" target="_blank" rel="noopener">Review attachment</a></p>':'')+'</div><div class="record-actions"><button type="button" data-approve-confession="'+htmlText(post.id)+'">Accept</button><button type="button" class="delete-record" data-reject-confession="'+htmlText(post.id)+'">Decline &amp; delete</button></div></article>';}).join('');
+        list.innerHTML=state.confessionRequests.map(post=>{const media=safeConfessionMediaUrl(post.media_url),body=htmlText(post.body||'Attachment only'),tag=htmlText(post.tag||'Confession'),created=htmlText(post.created_at?new Date(post.created_at).toLocaleString():'');return '<article class="record-row"><div><strong>'+tag+'  |  '+created+'</strong><p style="white-space:pre-wrap">'+body+'</p>'+(media?'<p><a href="'+htmlText(media)+'" target="_blank" rel="noopener">Review attachment</a></p>':'')+'</div><div class="record-actions"><button type="button" data-approve-confession="'+htmlText(post.id)+'">Accept</button><button type="button" class="delete-record" data-reject-confession="'+htmlText(post.id)+'">Decline &amp; delete</button></div></article>';}).join('');
         list.querySelectorAll('[data-approve-confession]').forEach(button=>button.addEventListener('click',()=>reviewConfession(button.dataset.approveConfession,true,button)));
         list.querySelectorAll('[data-reject-confession]').forEach(button=>button.addEventListener('click',()=>reviewConfession(button.dataset.rejectConfession,false,button)));
         message('confessionRequestsStatus',state.confessionRequests.length+' pending confession'+(state.confessionRequests.length===1?'':'s')+'.');
@@ -87,7 +87,7 @@
       const resourceType=kind==='video'?'video':'auto';
       if(resourceType==='video'&&file.size>100*1024*1024){
         const sizeMiB=(file.size/1024/1024).toFixed(1);
-        throw new Error('â€œ'+file.name+'â€ is '+sizeMiB+' MiB. Cloudinary upload limit is 100 MiB. Use a public video URL or increase the account/preset limit.');
+        throw new Error('"'+file.name+'" is '+sizeMiB+' MiB. Cloudinary upload limit is 100 MiB. Use a public video URL or increase the account/preset limit.');
       }
       const bar=$('uploadProgress');
       if(progress){bar.style.display='block';bar.firstElementChild.style.width='0';}
@@ -110,16 +110,23 @@
     }
     function normalizeOptionalHttpsUrl(value,label){
       if(!value)return null;
-      let url;try{url=new URL(value);}catch{throw new Error('Enter a valid '+label+' URL.');}
+      let input=String(value).trim().replace(/&amp;/gi,'&');
+      const src=input.match(/\bsrc\s*=\s*(["'])(.*?)\1/i);
+      if(src)input=src[2].trim();
+      input=input.replace(/^["'`]|["'`]$/g,'');
+      let url;try{url=new URL(input);}catch{throw new Error('Paste a valid '+label+' URL or an iframe code containing its src URL.');}
       if(url.protocol!=='https:'||url.username||url.password)throw new Error(label+' must be a secure HTTPS URL.');
       return url.href;
     }
     function normalizeOdyseeEmbedUrl(value,label){
       if(!value)return null;
       const normalized=normalizeOptionalHttpsUrl(value,label),url=new URL(normalized);
-      const parts=url.pathname.split('/').filter(Boolean);
-      if(!['odysee.com','www.odysee.com'].includes(url.hostname.toLowerCase())||parts[0]!=='$'||parts[1]!=='embed'||parts.length<3)
-        throw new Error(label+' must be an Odysee embed URL copied from Share → Embed.');
+      const parts=url.pathname.split('/').filter(Boolean).map(part=>{try{return decodeURIComponent(part);}catch{return part;}});
+      if(!['odysee.com','www.odysee.com'].includes(url.hostname.toLowerCase())||!parts.length)
+        throw new Error(label+' must be an Odysee video/embed URL or iframe code copied from Share > Embed.');
+      if(parts[0]==='$'&&parts[1]==='embed'&&parts.length<3)
+        throw new Error(label+' is missing the video identifier. Copy the complete URL from Odysee Share > Embed.');
+      if(parts[0]!=='$'||parts[1]!=='embed')url.pathname='/$/embed/'+url.pathname.replace(/^\/+/, '');
       return url.href;
     }
     function readChapterVideo(value,odyseeColumn){
@@ -137,7 +144,7 @@
       return {primary:value,odysee:odyseeColumn||''};
     }
     async function saveRecord(table,payload,id,status,label){
-      message(status,'Savingâ€¦');
+      message(status,'Saving...');
       const result=id?await supabase.from(table).update(payload).eq('id',id).select('id').maybeSingle():await supabase.from(table).insert(payload);
       if(result.error)throw result.error;
       if(id&&!result.data)throw new Error('No row was updated. Check staff permissions or reload the record list.');
@@ -161,10 +168,10 @@
       const query=($('subjectSearch')?.value||'').trim().toLowerCase();
       const subjects=state.subjects.filter(subject=>!query||[subject.name,subject.code,subject.branch,subject.year,subject.semester]
         .some(value=>String(value||'').toLowerCase().includes(query)));
-      $('subjectRecords').innerHTML=subjects.map(subject=>'<article class="record-row"><div><strong>'+htmlText(subject.name)+' Â· '+htmlText(subject.code)+'</strong><p>'+htmlText(subject.branch)+' Â· '+htmlText(subject.year)+' Â· Semester '+htmlText(subject.semester||'â€”')+'</p></div>'+actionButtons(subject.id,'edit-subject','delete-subject')+'</article>').join('')||(query?'<p class="hint">No subjects match your search.</p>':'<p class="hint">No subjects yet.</p>');
+      $('subjectRecords').innerHTML=subjects.map(subject=>'<article class="record-row"><div><strong>'+htmlText(subject.name)+'  |  '+htmlText(subject.code)+'</strong><p>'+htmlText(subject.branch)+'  |  '+htmlText(subject.year)+'  |  Semester '+htmlText(subject.semester||'-')+'</p></div>'+actionButtons(subject.id,'edit-subject','delete-subject')+'</article>').join('')||(query?'<p class="hint">No subjects match your search.</p>':'<p class="hint">No subjects yet.</p>');
     }
     function subjectOptionLabel(subject){
-      return subject.name+' Â· '+subject.code+' Â· '+subject.year+' Â· '+subject.branch;
+      return subject.name+'  |  '+subject.code+'  |  '+subject.year+'  |  '+subject.branch;
     }
     function renderChapterSubjectOptions(){
       const select=$('chapterSubject'),picker=$('chapterSubjectSearch'),selected=select.value;
@@ -185,7 +192,7 @@
       state.subjects=data||[];
       for(const id of ['chapterSubject','assignmentSubject','pyqSubject']){
         const select=$(id),previous=select.value;
-        select.innerHTML='<option value="">Choose subject</option>'+state.subjects.map(s=>'<option value="'+htmlText(s.id)+'">'+htmlText(s.name)+' Â· '+htmlText(s.code)+' Â· '+htmlText(s.year)+' Â· '+htmlText(s.branch)+'</option>').join('');
+        select.innerHTML='<option value="">Choose subject</option>'+state.subjects.map(s=>'<option value="'+htmlText(s.id)+'">'+htmlText(s.name)+'  |  '+htmlText(s.code)+'  |  '+htmlText(s.year)+'  |  '+htmlText(s.branch)+'</option>').join('');
         if(state.subjects.some(s=>s.id===previous))select.value=previous;
       }
       renderChapterSubjectOptions();
@@ -194,9 +201,9 @@
     function renderManagedRecords(){
       $('assignmentRecords').innerHTML=state.assignments.map(a=>{
         const subject=state.subjects.find(s=>s.id===a.subject_id);
-        return '<article class="record-row"><div><strong>'+htmlText(a.title)+'</strong><p>'+htmlText(subject?.name||'Class assignment')+' Â· Due '+(a.due_at?htmlText(new Date(a.due_at).toLocaleString()):'not set')+'</p></div>'+actionButtons(a.id,'edit-assignment','delete-assignment')+'</article>';
+        return '<article class="record-row"><div><strong>'+htmlText(a.title)+'</strong><p>'+htmlText(subject?.name||'Class assignment')+'  |  Due '+(a.due_at?htmlText(new Date(a.due_at).toLocaleString()):'not set')+'</p></div>'+actionButtons(a.id,'edit-assignment','delete-assignment')+'</article>';
       }).join('')||'<p class="hint">No assignments yet.</p>';
-      $('noticeRecords').innerHTML=state.notices.map(n=>'<article class="record-row"><div><strong>'+htmlText(n.title)+'</strong><p>'+htmlText(n.category||'General')+' Â· '+htmlText(n.branch||'All branches')+' Â· '+htmlText(n.year||'All years')+'</p></div>'+actionButtons(n.id,'edit-notice','delete-notice')+'</article>').join('')||'<p class="hint">No notices yet.</p>';
+      $('noticeRecords').innerHTML=state.notices.map(n=>'<article class="record-row"><div><strong>'+htmlText(n.title)+'</strong><p>'+htmlText(n.category||'General')+'  |  '+htmlText(n.branch||'All branches')+'  |  '+htmlText(n.year||'All years')+'</p></div>'+actionButtons(n.id,'edit-notice','delete-notice')+'</article>').join('')||'<p class="hint">No notices yet.</p>';
       if(state.role==='admin'){
         const query=($('chapterSearch')?.value||'').trim().toLowerCase();
         const filteredChapters=state.chapters.filter(c=>{
@@ -207,12 +214,12 @@
         });
         $('chapterRecords').innerHTML=filteredChapters.map(c=>{
           const subject=state.subjects.find(s=>s.id===c.subject_id);
-          const links=[c.video_url?'Video':'',c.notes_url?'Notes':'',c.notes_url_2?'Notes Link 2':'',c.practice_url?'Link: '+c.practice_url:''].filter(Boolean).join(' Â· ')||'No media or links';
-          return '<article class="record-row"><div><strong>'+htmlText(c.chapter_order||'')+(c.chapter_order?'. ':'')+htmlText(c.title)+'</strong><p>'+htmlText(subject?.name||'Unknown subject')+' Â· '+htmlText(links)+'</p></div>'+actionButtons(c.id,'edit-chapter','delete-chapter')+'</article>';
+          const links=[c.video_url?'Video':'',c.notes_url?'Notes':'',c.notes_url_2?'Notes Link 2':'',c.practice_url?'Link: '+c.practice_url:''].filter(Boolean).join('  |  ')||'No media or links';
+          return '<article class="record-row"><div><strong>'+htmlText(c.chapter_order||'')+(c.chapter_order?'. ':'')+htmlText(c.title)+'</strong><p>'+htmlText(subject?.name||'Unknown subject')+'  |  '+htmlText(links)+'</p></div>'+actionButtons(c.id,'edit-chapter','delete-chapter')+'</article>';
         }).join('')||(query?'<p class="hint">No chapters match your search.</p>':'<p class="hint">No chapters or links yet.</p>');
         $('pyqRecords').innerHTML=state.pyqs.map(p=>{
           const subject=state.subjects.find(s=>s.id===p.subject_id);
-          return '<article class="record-row"><div><strong>'+htmlText(p.title||p.file_name||'Question paper')+'</strong><p>'+htmlText(subject?.name||'Unknown subject')+' Â· '+htmlText(p.exam_year||'Year not set')+' Â· '+htmlText(p.file_name||'PDF attached')+'</p></div>'+actionButtons(p.id,'edit-pyq','delete-pyq')+'</article>';
+          return '<article class="record-row"><div><strong>'+htmlText(p.title||p.file_name||'Question paper')+'</strong><p>'+htmlText(subject?.name||'Unknown subject')+'  |  '+htmlText(p.exam_year||'Year not set')+'  |  '+htmlText(p.file_name||'PDF attached')+'</p></div>'+actionButtons(p.id,'edit-pyq','delete-pyq')+'</article>';
         }).join('')||'<p class="hint">No PYQs yet.</p>';
       }
     }
@@ -271,7 +278,7 @@
       }
       const remove=event.target.closest('[data-delete-subject]');if(!remove)return;
       const subject=state.subjects.find(item=>item.id===remove.dataset.deleteSubject);if(!subject)return;
-      void deleteRecord('academic_subjects',subject.id,'Subject',async()=>{await refreshSubjects();await loadManagedRecords();},'Delete â€œ'+subject.name+'â€? Linked chapters, assignments or PYQs may also be removed, depending on the database relationships.');
+      void deleteRecord('academic_subjects',subject.id,'Subject',async()=>{await refreshSubjects();await loadManagedRecords();},'Delete "'+subject.name+'"? Linked chapters, assignments or PYQs may also be removed, depending on the database relationships.');
     });
 
     $('chapterForm').addEventListener('submit',async e=>{
@@ -287,12 +294,14 @@
         if(notesFile){try{notes=await upload(notesFile,'auto');}catch(error){notesUploadError=error;}}
         if(notesUploadError&&!notesUrl2)throw notesUploadError;
         const priorVideo=readChapterVideo(existing?.video_url,existing?.video_odysee_url);
-        const primaryVideoUrl=video?.url||videoUrl||null;
+        const hostedPrimaryUrl=video?.url||videoUrl||null;
+        const primaryVideoUrl=hostedPrimaryUrl||odyseeVideo||null;
+        const videoOdyseeFallback=hostedPrimaryUrl?odyseeVideo:null;
         const notesPrimaryUrl=notesUploadError?notesUrl2:(notes?.url||existing?.notes_url||notesUrl2||null);
-        const notesSecondaryUrl=notesUploadError?null:(notesUrl2&&notesUrl2!==notesPrimaryUrl?notesUrl2:(existing?.notes_url_2||null));
+        const notesSecondaryUrl=notesUploadError?null:(notesUrl2&&notesUrl2!==notesPrimaryUrl?notesUrl2:(existing?.notes_url_2&&existing.notes_url_2!==notesPrimaryUrl?existing.notes_url_2:null));
         const payload={
           subject_id:$('chapterSubject').value,title:$('chapterTitle').value.trim(),description:$('chapterDescription').value.trim(),
-          video_url:primaryVideoUrl,video_odysee_url:odyseeVideo,video_public_id:video?.publicId||(primaryVideoUrl===priorVideo.primary?existing?.video_public_id:null),
+          video_url:primaryVideoUrl,video_odysee_url:videoOdyseeFallback,video_public_id:video?.publicId||(primaryVideoUrl===priorVideo.primary?existing?.video_public_id:null),
           notes_url:notesPrimaryUrl,notes_url_2:notesSecondaryUrl,
           notes_name:notes?.url?notesFile.name:(notesUploadError?null:(existing?.notes_name||null)),
           practice_url:$('chapterPractice').value.trim()||null,chapter_order:Number($('chapterOrder').value)||0
@@ -418,14 +427,14 @@
       e.preventDefault();const id=$('moderationUserId').value.trim(),duration=$('moderationDuration').value;
       if(!uuidPattern.test(id))return message('moderationStatus','Enter a valid user UUID.',true);
       if(!await window.confirm(`Block new sign-ins for this account ${duration==='permanent'?'until an admin lifts it':`for ${duration}`}? Existing sessions may continue until their access tokens expire.`))return;
-      message('moderationStatus','Applying account restrictionâ€¦');
+      message('moderationStatus','Applying account restriction...');
       try{await moderationAction('ban_user',{user_id:id,duration},'moderationStatus');}
       catch(error){message('moderationStatus',error.message||String(error),true);}
     });
     $('moderationUnban').addEventListener('click',async()=>{
       const id=$('moderationUserId').value.trim();if(!uuidPattern.test(id))return message('moderationStatus','Enter a valid user UUID first.',true);
       if(!await window.confirm('Lift the sign-in restriction for this account?'))return;
-      message('moderationStatus','Lifting account restrictionâ€¦');
+      message('moderationStatus','Lifting account restriction...');
       try{await moderationAction('unban_user',{user_id:id},'moderationStatus');}
       catch(error){message('moderationStatus',error.message||String(error),true);}
     });
@@ -435,7 +444,7 @@
       const id=match?.[0];
       if(!id)return message('moderationPostStatus','Paste a valid confession share link or post UUID.',true);
       if(!await window.confirm('Permanently delete this confession post?'))return;
-      message('moderationPostStatus','Deleting confessionâ€¦');
+      message('moderationPostStatus','Deleting confession...');
       try{await moderationAction('delete_confession',{post_id:id},'moderationPostStatus');e.target.reset();}
       catch(error){message('moderationPostStatus',error.message||String(error),true);}
     });
@@ -467,7 +476,7 @@
       }catch(error){message('managerStatus','Could not load all saved entries: '+(error.message||error),true);}
     }
     $('staffLoginForm').addEventListener('submit',async event=>{
-      event.preventDefault();const button=$('staffLoginButton');button.disabled=true;message('staffLoginStatus','Checking staff accessâ€¦');
+      event.preventDefault();const button=$('staffLoginButton');button.disabled=true;message('staffLoginStatus','Checking staff access...');
       try{
         const {error}=await supabase.auth.signInWithPassword({email:$('staffEmail').value.trim(),password:$('staffPassword').value});
         if(error)throw error;await init();

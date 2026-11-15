@@ -44,7 +44,7 @@
 </head>
 <body>
   <main class="shell">
-    <div class="brand">MGMCOET Â· Staff Console</div>
+    <div class="brand">MGMCOET  |  Staff Console</div>
     <section class="card" id="loginCard">
       <h1>Staff sign in</h1>
       <p class="intro">Private entry for approved academic admins and subadmins.</p>
@@ -66,19 +66,19 @@
           <div><h2 id="analyticsHeading">Analytics</h2><p class="intro">Portal activity, database size and recent issues.</p></div>
           <button class="analytics-refresh" id="analyticsRefresh" type="button">Refresh</button>
         </header>
-        <p class="analytics-status" id="analyticsStatus" role="status">Loading analyticsâ€¦</p>
+        <p class="analytics-status" id="analyticsStatus" role="status">Loading analytics...</p>
         <div class="stat-grid">
-          <div class="stat"><span>Users today</span><strong id="metricToday">â€”</strong></div>
-          <div class="stat"><span>Users this month</span><strong id="metricMonthUsers">â€”</strong></div>
-          <div class="stat"><span>Page visits this month</span><strong id="metricMonthViews">â€”</strong></div>
-          <div class="stat"><span>Database size</span><strong id="metricDatabase">â€”</strong></div>
-          <div class="stat"><span>DB change vs first monthly sample</span><strong id="metricDatabaseChange">â€”</strong></div>
-          <div class="stat"><span>Browser errors Â· 24h</span><strong id="metricErrors">â€”</strong></div>
+          <div class="stat"><span>Users today</span><strong id="metricToday">-</strong></div>
+          <div class="stat"><span>Users this month</span><strong id="metricMonthUsers">-</strong></div>
+          <div class="stat"><span>Page visits this month</span><strong id="metricMonthViews">-</strong></div>
+          <div class="stat"><span>Database size</span><strong id="metricDatabase">-</strong></div>
+          <div class="stat"><span>DB change vs first monthly sample</span><strong id="metricDatabaseChange">-</strong></div>
+          <div class="stat"><span>Browser errors  |  24h</span><strong id="metricErrors">-</strong></div>
         </div>
         <div class="analytics-grid">
-          <section class="analytics-box"><h3>Daily active users Â· last 30 days</h3><p>Unique signed-in users seen each day. Hover or focus a point for the exact date and count.</p><div class="daily-summary"><div><span>30-day average</span><strong id="dailyAverage">â€”</strong></div><div><span>Peak day</span><strong id="dailyPeak">â€”</strong></div><div><span>Last 7 days</span><strong id="dailyTrend">â€”</strong></div></div><div class="daily-chart" id="dailyChart" role="group" aria-label="Daily active users over the last 30 days"></div></section>
+          <section class="analytics-box"><h3>Daily active users  |  last 30 days</h3><p>Unique signed-in users seen each day. Hover or focus a point for the exact date and count.</p><div class="daily-summary"><div><span>30-day average</span><strong id="dailyAverage">-</strong></div><div><span>Peak day</span><strong id="dailyPeak">-</strong></div><div><span>Last 7 days</span><strong id="dailyTrend">-</strong></div></div><div class="daily-chart" id="dailyChart" role="group" aria-label="Daily active users over the last 30 days"></div></section>
           <section class="analytics-box"><h3>Supabase requests</h3><p id="usagePeriod">Counts across Auth, Realtime, REST and Storage.</p><div class="usage-list" id="usageList"></div></section>
-          <section class="analytics-box"><h3>Firebase / Firestore Â· this month</h3><p>Emergency Chat and E-Library document operations and current storage.</p><div class="usage-list" id="firebaseList"></div></section>
+          <section class="analytics-box"><h3>Firebase / Firestore  |  this month</h3><p>Emergency Chat and E-Library document operations and current storage.</p><div class="usage-list" id="firebaseList"></div></section>
           <section class="analytics-box"><h3>Largest database tables</h3><p>Current table size, including indexes.</p><div class="table-list" id="tableList"></div></section>
           <section class="analytics-box"><h3>Recent issues</h3><p>Browser errors and Supabase service errors.</p><div class="error-list" id="errorList"></div></section>
         </div>

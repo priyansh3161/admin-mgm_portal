@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -21,7 +21,7 @@
     <div class="status" id="staffLoginStatus" role="status"></div>
   </main>
   <main class="wrap" id="adminApp" hidden>
-    <header class="head"><div><h1>Academic Content Manager</h1><p id="roleDescription">Loading staff permissionsâ€¦</p></div><div style="display:flex;align-items:center;gap:10px"><span class="badge" id="roleBadge">Checking accessâ€¦</span><button class="logout" id="staffLogout" type="button">Sign out</button></div></header>
+    <header class="head"><div><h1>Academic Content Manager</h1><p id="roleDescription">Loading staff permissions...</p></div><div style="display:flex;align-items:center;gap:10px"><span class="badge" id="roleBadge">Checking access...</span><button class="logout" id="staffLogout" type="button">Sign out</button></div></header>
     <div class="status" id="managerStatus" role="status"></div>
     <nav class="tabs" id="tabs">
       <button class="tab active admin-only" data-panel="subjectPanel" hidden>Subjects</button><button class="tab admin-only" data-panel="chapterPanel" hidden>Chapters &amp; media</button><button class="tab" data-panel="assignmentPanel">Assignments</button><button class="tab" data-panel="noticePanel">Notices</button><button class="tab admin-only" data-panel="pyqPanel" hidden>PYQs</button><button class="tab admin-only" data-panel="staffPanel" hidden>Staff access</button><button class="tab admin-only" data-panel="resourceRequestsPanel" hidden>E-Library requests</button><button class="tab" data-panel="confessionRequestsPanel">Confession requests</button><button class="tab admin-only" data-panel="moderationPanel" hidden>Moderation</button>
@@ -40,10 +40,10 @@
       <div class="field full"><label for="chapterDescription">Description (optional)</label><textarea id="chapterDescription"></textarea></div>
       <div class="field"><label for="chapterVideo">Video upload (optional)</label><input id="chapterVideo" type="file" accept="video/*"></div>
       <div class="field"><label for="chapterVideoUrl">Video URL (optional)</label><input id="chapterVideoUrl" type="url" placeholder="https://huggingface.co/datasets/you/videos/blob/main/lecture.mp4"></div>
-      <div class="field full"><label for="chapterVideoOdysee">Odysee video embed URL (fallback)</label><input id="chapterVideoOdysee" type="url" placeholder="https://odysee.com/$/embed/video-name/claim-id"></div>
+      <div class="field full"><label for="chapterVideoOdysee">Odysee video URL or embed code (primary if alone, fallback if both)</label><input id="chapterVideoOdysee" type="text" inputmode="url" placeholder="Paste Odysee URL or the iframe code from Share > Embed"></div>
       <div class="field"><label for="chapterNotes">Notes upload (optional)</label><div class="row"><input id="chapterNotes" type="file" accept=".pdf,.doc,.docx,image/*"><button class="cancel-edit" id="chapterNotesClear" type="button" hidden>Clear file</button></div></div>
-      <div class="field"><label for="chapterNotesUrl2">Notes Link 2 (Google Drive or Odysee embed)</label><input id="chapterNotesUrl2" type="url" placeholder="https://odysee.com/$/embed/notes-name/claim-id"></div>
-      <div class="field full"><label for="chapterPractice">Practice / reference link (optional)</label><input id="chapterPractice" type="url" placeholder="https://â€¦"></div>
+      <div class="field"><label for="chapterNotesUrl2">Notes Link 2 (Google Drive or Odysee embed)</label><input id="chapterNotesUrl2" type="text" inputmode="url" placeholder="Paste a secure URL or Odysee iframe code"></div>
+      <div class="field full"><label for="chapterPractice">Practice / reference link (optional)</label><input id="chapterPractice" type="url" placeholder="https://..."></div>
     </div><div class="progress" id="uploadProgress"><span></span></div><div class="form-actions"><button class="submit" id="chapterSubmit">Add chapter</button><button class="cancel-edit" id="chapterCancel" type="button" hidden>Cancel edit</button></div></form><div class="status" id="chapterStatus"></div><h3>Existing chapters and links</h3><div class="field"><label for="chapterSearch">Search chapters</label><input id="chapterSearch" type="search" placeholder="Search by chapter, subject, number, or link"></div><div id="chapterRecords" class="record-list"></div></section>
     <section class="panel" id="assignmentPanel"><h2>Assignments</h2><p class="hint">Publish or edit assignments for a subject and deadline.</p><form id="assignmentForm"><input id="assignmentId" type="hidden"><div class="grid">
       <div class="field full"><label for="assignmentSubject">Subject / target class</label><select id="assignmentSubject" required></select></div>
@@ -52,7 +52,7 @@
       <div class="field full"><label for="assignmentDescription">Instructions</label><textarea id="assignmentDescription"></textarea></div>
       <div class="field full"><label for="assignmentFile">Assignment file (optional)</label><input id="assignmentFile" type="file" accept=".pdf,.doc,.docx,image/*"></div>
     </div><div class="form-actions"><button class="submit" id="assignmentSubmit">Publish assignment</button><button class="cancel-edit" id="assignmentCancel" type="button" hidden>Cancel edit</button></div></form><div class="status" id="assignmentStatus"></div><h3>Existing assignments</h3><div id="assignmentRecords" class="record-list"></div></section>
-    <section class="panel" id="noticePanel"><h2>Notices</h2><p class="hint">Publish or edit a notice. Leave branch and year as â€œAll studentsâ€ for a college-wide notice.</p><form id="noticeForm"><input id="noticeId" type="hidden"><div class="grid">
+    <section class="panel" id="noticePanel"><h2>Notices</h2><p class="hint">Publish or edit a notice. Leave branch and year as "All students" for a college-wide notice.</p><form id="noticeForm"><input id="noticeId" type="hidden"><div class="grid">
       <div class="field"><label for="noticeTitle">Title</label><input id="noticeTitle" required></div>
       <div class="field"><label for="noticeCategory">Category</label><select id="noticeCategory"><option value="general">General</option><option value="exams">Exams</option><option value="holidays">Holidays</option><option value="events">Events</option><option value="placements">Placements</option></select></div>
       <div class="field"><label for="noticeBranch">Branch</label><select id="noticeBranch"></select></div>
