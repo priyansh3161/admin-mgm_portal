@@ -180,7 +180,7 @@ installDeveloperToolsGuard(async () => {
         usage.append(note);
         const link = document.createElement('a');
         link.className = 'setup-link';
-        link.href = '../ADMIN_ANALYTICS_SETUP.md';
+        link.href = './ADMIN_ANALYTICS_SETUP.md';
         link.textContent = 'Analytics setup';
         usage.append(link);
       }
@@ -201,7 +201,7 @@ installDeveloperToolsGuard(async () => {
           addErrorRow(firebase, name, metrics?.note || 'Usage is not configured.');
           const link = document.createElement('a');
           link.className = 'setup-link';
-          link.href = '../ADMIN_ANALYTICS_SETUP.md';
+          link.href = './ADMIN_ANALYTICS_SETUP.md';
           link.textContent = 'Analytics setup';
           firebase.append(link);
           return;
