@@ -121,12 +121,12 @@
     function normalizeOdyseeEmbedUrl(value,label){
       if(!value)return null;
       const normalized=normalizeOptionalHttpsUrl(value,label),url=new URL(normalized);
-      const parts=url.pathname.split('/').filter(Boolean).map(part=>{try{return decodeURIComponent(part);}catch{return part;}});
+      const parts=url.pathname.split('/').filter(Boolean).map(part=>{try{return decodeURIComponent(part);}catch{return part;}}).join('/').split('/').filter(Boolean);
       if(!['odysee.com','www.odysee.com'].includes(url.hostname.toLowerCase())||!parts.length)
         throw new Error(label+' must be an Odysee video/embed URL or iframe code copied from Share > Embed.');
       if(parts[0]==='$'&&parts[1]==='embed'&&parts.length<3)
         throw new Error(label+' is missing the video identifier. Copy the complete URL from Odysee Share > Embed.');
-      if(parts[0]!=='$'||parts[1]!=='embed')url.pathname='/$/embed/'+url.pathname.replace(/^\/+/, '');
+      url.pathname='/'+(parts[0]==='$'&&parts[1]==='embed'?parts.join('/'):['$','embed',...parts].join('/'));
       return url.href;
     }
     function readChapterVideo(value,odyseeColumn){
