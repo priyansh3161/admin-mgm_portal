@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Finish student profile | MGMCOET Portal</title>
+  <link rel="icon" type="image/jpeg" href="mgmcoet-mark.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#eaf3ff;--dim:#a9bdd9;--cyan:#5ce1ff;--violet:#b98bff;--glass:rgba(18,26,42,.42);--line:rgba(180,220,255,.16)}
+    *{box-sizing:border-box}html{min-height:100%;width:100%;overflow-x:hidden}body{min-height:100vh;margin:0;font-family:Inter,sans-serif;background:#060a12;color:var(--ink);-webkit-tap-highlight-color:transparent}
+    .bg-wrap{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;z-index:0;background:radial-gradient(ellipse at 20% 20%,#234783 0,transparent 45%),radial-gradient(ellipse at 85% 80%,#422b70 0,transparent 40%),#060a12}
+    .bg-wrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.72)}
+    .mgm-badge{position:fixed;top:22px;right:24px;z-index:3;padding:9px 15px;background:rgba(14,20,34,.32);border:1px solid rgba(180,220,255,.16);border-radius:12px;backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);text-align:right;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+    .mgm-badge strong{font:700 13px Sora,sans-serif;letter-spacing:.06em}.mgm-badge strong span{display:inline-block;width:5px;height:5px;margin:0 6px 2px 0;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan)}.mgm-badge small{display:block;margin-top:3px;color:var(--dim);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+    main{position:relative;z-index:2;width:min(860px,calc(100% - 10vw));margin:36px 0 36px 5vw;padding:clamp(24px,4vw,42px);border:1px solid var(--line);border-radius:22px;background:var(--glass);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);box-shadow:0 8px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)}
+    .brand{font:700 12px Sora,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8fe9ff}.brand span{color:var(--dim);font:500 11px Inter,sans-serif;letter-spacing:.04em;text-transform:none}
+    h1{font:700 clamp(23px,5vw,30px) Sora,sans-serif;margin:16px 0 8px}.lead{color:var(--dim);font-size:13px;line-height:1.6;margin:0 0 22px}
+    .google-account{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:13px;background:#fff1;color:var(--ink);margin-bottom:20px;overflow-wrap:anywhere}
+    .google-account img{width:44px;height:44px;border-radius:50%;object-fit:cover;background:#273752}.google-account div{min-width:0}.google-account strong{display:block;font-size:13px}.google-account small{display:block;margin-top:4px;color:var(--dim)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px;min-width:0}.field.full{grid-column:1/-1}
+    label{display:block;font-size:11px;font-weight:700;color:var(--dim);margin-bottom:7px}.field input,.field select{width:100%;min-height:45px;padding:11px 12px;border:1px solid rgba(180,220,255,.22);border-radius:10px;background:rgba(18,34,60,.42);color:var(--ink);font:14px Inter,sans-serif;outline:none}.field input:focus,.field select:focus{border-color:var(--cyan);background:rgba(18,34,60,.58);box-shadow:0 0 0 3px #5ce1ff20}.field select option{background:#263b5d;color:var(--ink)}.hint{font-size:10.5px;color:var(--dim);line-height:1.5;margin-top:6px}
+    .photo-row{display:flex;align-items:center;gap:13px}.photo-row img{width:58px;height:58px;object-fit:cover;border-radius:50%;background:#273752}.photo-row input{padding:8px}
+    .form-message{display:none;padding:11px 13px;border-radius:10px;font-size:12px;line-height:1.5;margin:10px 0 15px}.form-message.show{display:block}.form-message.error{background:#ff5a5a18;border:1px solid #ff5a5a55;color:#ffc2c2}.form-message.success{background:#5ce1ff18;border:1px solid #5ce1ff55;color:#a9f2ff}
+    button,.action{display:inline-flex;justify-content:center;align-items:center;min-height:46px;padding:11px 16px;border:0;border-radius:10px;background:linear-gradient(135deg,var(--cyan),#6a8fff 55%,var(--violet));color:#08121e;font:700 13px Sora,sans-serif;text-decoration:none;cursor:pointer}
+    button{width:100%;margin-top:5px}button:disabled{opacity:.6;cursor:wait}.secondary{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.secondary[hidden]{display:none}.secondary .action{flex:1;background:#fff;color:#172033}.secondary .action.primary{background:#b8f5ce;color:#0e3020}.note{margin:15px 0 0;color:var(--dim);font-size:11px;line-height:1.55}
+    @media(max-width:900px){main{width:min(860px,calc(100% - 36px));margin:36px auto}}
+    @media(max-width:560px){.mgm-badge{top:calc(12px + env(safe-area-inset-top));left:50%;right:auto;transform:translateX(-50%);text-align:center;padding:8px 18px;border-radius:999px}.mgm-badge strong{font-size:12px}.mgm-badge small{font-size:8px}main{width:calc(100% - 28px);margin:92px auto calc(14px + env(safe-area-inset-bottom));padding:24px 20px;border-radius:18px}.grid{grid-template-columns:1fr;gap:0}.field.full{grid-column:auto}.photo-row{align-items:flex-start;flex-direction:column}}
+  </style>
+  <script type="module" src="./guard-bootstrap.js"></script>
+</head>
+<body>
+  <div class="bg-wrap" aria-hidden="true">
+    <video autoplay muted loop playsinline>
+      <source src="bg.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="mgm-badge" aria-label="MGMCOET Unofficial Student Portal">
+    <strong><span></span>MGMCOET</strong>
+    <small>Unofficial Student Portal</small>
+  </div>
+  <main>
+    <div class="brand">MGMCOET <span>· Student Portal</span></div>
+    <h1>Finish your student profile</h1>
+    <p class="lead">Add your student details, portal password, and chat security keyword.</p>
+    <div class="google-account">
+      <img id="googleAvatar" alt="Google profile photo">
+      <div><strong id="googleName">Google account</strong><small id="googleEmail"></small></div>
+    </div>
+
+    <form id="profileForm">
+      <div class="grid">
+        <div class="field full"><label for="fullName">Full name</label><input id="fullName" required maxlength="100" autocomplete="name"></div>
+        <div class="field"><label for="rollNo">College roll number</label><input id="rollNo" required maxlength="32" autocomplete="off"></div>
+        <div class="field"><label for="branch">Branch</label><select id="branch" required><option value="" selected disabled>Select branch</option><option>Computer Science &amp; Engineering</option><option>Information Technology</option><option>Electronics &amp; Communication</option><option>Electrical Engineering</option><option>Mechanical Engineering</option><option>Civil Engineering</option><option>Other</option></select></div>
+        <div class="field"><label for="year">Year</label><select id="year" required><option value="" selected disabled>Select year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option></select></div>
+        <div class="field"><label for="semester">Semester</label><select id="semester" required><option value="" selected disabled>Select semester</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></div>
+        <div class="field full"><label for="photo">Profile photo <span style="font-weight:500">(optional)</span></label><div class="photo-row"><img id="photoPreview" alt="Profile photo preview"><input id="photo" type="file" accept="image/jpeg,image/png,image/webp"></div><div class="hint">You can leave this empty and continue. JPG, PNG, or WebP up to 5 MB. Your Google photo is used if you skip it.</div></div>
+        <div class="field"><label for="portalPassword">Create portal password</label><input id="portalPassword" type="password" minlength="12" autocomplete="new-password" required><div class="hint">At least 12 characters. Used for future email/password sign-in.</div></div>
+        <div class="field"><label for="securityKeyword">Chat security keyword</label><input id="securityKeyword" type="password" minlength="6" autocomplete="new-password" required><div class="hint">At least 6 characters. Needed to unlock chat on another device.</div></div>
+      </div>
+      <div class="form-message" id="profileMessage" role="status"></div>
+      <button id="completeButton" type="submit">Save profile and continue</button>
+    </form>
+    <p class="note">Download your Recovery Codes file to restore chats if you forget your keyword.</p>
+    <div class="secondary" id="completionActions" hidden>
+      <a class="action" id="recoveryDownload" download="MGMCOET-Recovery-Codes.json">Download Recovery Codes</a>
+      <a class="action primary" id="continueButton">Continue to portal</a>
+    </div>
+  </main>
+  <script type="module">
+    import { completeGoogleProfile, getPostLoginTarget, getSession, loadProfile, requireAuth, saveAvatarUrl, supabase } from './auth.js';
+    import { makeRecoveryCodes, recoveryCodesBlob } from './recovery-codes.js';
+
+    const $ = (id) => document.getElementById(id);
+    const form = $('profileForm');
+    const message = $('profileMessage');
+    const button = $('completeButton');
+    const avatar = $('photoPreview');
+    let selectedPhoto = null;
+    let previewUrl = '';
+    const showMessage = (text, type) => { message.textContent = text; message.className = `form-message show ${type}`; };
+
+    const session = await requireAuth();
+    if (session) {
+      if (!/^[^\s@]+@coet\.in$/i.test(session.user.email || '') || !session.user.email_confirmed_at) {
+        await supabase.auth.signOut();
+        window.location.replace('login.html');
+      } else {
+        try {
+          const profile = await loadProfile();
+          if (profile?.roll_no) window.location.replace(getPostLoginTarget());
+        } catch { /* incomplete Google profiles may not have a profile row yet */ }
+        const metadata = session.user.user_metadata || {};
+        $('googleName').textContent = metadata.full_name || metadata.name || 'Google account';
+        $('googleEmail').textContent = session.user.email;
+        $('fullName').value = metadata.full_name || metadata.name || '';
+        const photoUrl = metadata.avatar_url || metadata.picture || '';
+        if (photoUrl) { $('googleAvatar').src = photoUrl; avatar.src = photoUrl; }
+      }
+    }
+
+    $('photo').addEventListener('change', () => {
+      selectedPhoto = $('photo').files?.[0] || null;
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      if (!selectedPhoto) { avatar.src = $('googleAvatar').src; return; }
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(selectedPhoto.type) || selectedPhoto.size > 5 * 1024 * 1024) {
+        selectedPhoto = null; $('photo').value = '';
+        showMessage('Choose a JPG, PNG, or WebP image up to 5 MB.', 'error');
+        return;
+      }
+      previewUrl = URL.createObjectURL(selectedPhoto); avatar.src = previewUrl;
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      message.className = 'form-message';
+      button.disabled = true; button.textContent = 'Saving your student profile…';
+      try {
+        const result = await completeGoogleProfile({
+          full_name: $('fullName').value, roll_no: $('rollNo').value,
+          branch: $('branch').value, year: $('year').value, semester: $('semester').value,
+          password: $('portalPassword').value, keyword: $('securityKeyword').value
+        });
+        let photoWarning = '';
+        if (selectedPhoto) {
+          try {
+            const body = new FormData(); body.set('action', 'upload_avatar'); body.set('file', selectedPhoto);
+            const { data, error } = await supabase.functions.invoke('profile-media', { body });
+            if (error) throw error;
+            if (data?.error) throw new Error(data.error);
+            await saveAvatarUrl(data.secure_url, data.public_id);
+          } catch (photoError) { photoWarning = ` Your profile was saved, but the photo upload failed: ${photoError.message || 'try again in Settings'}.`; }
+        }
+        const recovery = recoveryCodesBlob(makeRecoveryCodes(result.keywordBackup, result.recoveryBackup));
+        $('recoveryDownload').href = URL.createObjectURL(recovery);
+        $('continueButton').href = getPostLoginTarget();
+        $('completionActions').hidden = false;
+        form.hidden = true;
+        showMessage(`Profile saved. Download your Recovery Codes before continuing.${photoWarning}${result.localKeySaved ? '' : ' Chat will ask for your security keyword the first time you open it on this device.'}`, photoWarning ? 'error' : 'success');
+      } catch (error) {
+        showMessage(error.message || 'Profile setup failed. Please try again.', 'error');
+        button.disabled = false; button.textContent = 'Save profile and continue';
+      }
+    });
+  </script>
+</body>
+</html>

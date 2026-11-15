@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#060a12">
+  <title>Change Security Keyword | MGMCOET Student Portal</title>
+  <link rel="icon" type="image/jpeg" href="mgmcoet-mark.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="password-recovery.css">
+  <style>
+    #successOverlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:rgba(3,8,20,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    #successOverlay[hidden]{display:none!important}
+    .success-dialog{width:min(460px,100%);padding:26px;border:1px solid rgba(156,202,255,.28);border-radius:20px;background:#101a30;box-shadow:0 24px 80px rgba(0,0,0,.45);text-align:center}
+    .success-dialog h2{margin:0 0 9px;font-size:21px}
+    .success-dialog p{color:#b7c7df;line-height:1.55;font-size:13px}
+    #downloadRecoveryLink{display:flex;text-align:center;text-decoration:none;margin-top:18px}
+    .success-continue{display:inline-block;margin-top:14px;color:#74dff2;font-size:13px}
+  </style>
+  <script type="module" src="./guard-bootstrap.js"></script>
+</head>
+<body>
+  <div class="bg-wrap" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="metadata"><source src="bg.mp4" type="video/mp4"></video>
+    <div class="bg-scrim"></div>
+  </div>
+
+  <div class="mgm-badge">
+    <div class="name">MGMCOET</div>
+    <div class="sub">Unofficial Student Portal</div>
+  </div>
+
+  <main class="stage">
+    <section class="card" aria-labelledby="pageTitle">
+      <div class="eyebrow">Chat encryption</div>
+      <h1 id="pageTitle">Change security keyword</h1>
+      <p class="tagline">Change your keyword, or restore your chat key with Recovery Codes and your account password.</p>
+
+      <div id="historyNotice" class="form-message info" role="alert" aria-live="assertive">
+        Use your Recovery Codes file and account password to restore your chat key without the old keyword.
+      </div>
+      <div id="statusMessage" class="form-message" role="status" aria-live="polite"></div>
+
+      <form id="keywordForm" hidden novalidate>
+        <section id="changeKeywordPanel">
+        <h2 style="font-size:15px;margin:4px 0 12px">Change keyword</h2>
+        <div class="field">
+          <label for="accountPassword">Account password</label>
+          <input id="accountPassword" type="password" autocomplete="current-password" required>
+        </div>
+        <div class="field">
+          <label for="currentKeyword">Current security keyword (required to keep existing chats)</label>
+          <input id="currentKeyword" type="password" autocomplete="current-password" required>
+        </div>
+        <div class="field">
+          <label for="newKeyword">New security keyword</label>
+          <input id="newKeyword" type="password" autocomplete="new-password" minlength="6" required>
+        </div>
+        <div class="field">
+          <label for="confirmKeyword">Confirm new security keyword</label>
+          <input id="confirmKeyword" type="password" autocomplete="new-password" minlength="6" required>
+        </div>
+        <button id="saveKeywordButton" class="btn-primary" type="submit">Update security keyword</button>
+        <p style="text-align:center;margin:14px 0 0;font-size:13px">Forgot your keyword? <a href="#recover" id="forgotKeywordLink" style="color:#74dff2">Use Recovery Codes</a></p>
+        <p style="text-align:center;margin:10px 0 0;font-size:13px">Lost your keyword and codes? <a href="reset_chat_identity.html" style="color:#74dff2">Create a new chat key</a></p>
+        </section>
+
+        <section id="recoverKeywordPanel" hidden>
+          <h2 style="font-size:15px;margin:4px 0 12px">Forgot keyword</h2>
+          <div class="field"><label for="recoveryAccountPassword">Account password</label><input id="recoveryAccountPassword" type="password" autocomplete="current-password"></div>
+          <div class="field"><label for="recoveryFile">Recovery Codes file</label><input id="recoveryFile" type="file" accept=".json,application/json" style="width:100%"></div>
+          <div class="field"><label for="recoveryNewKeyword">New security keyword</label><input id="recoveryNewKeyword" type="password" autocomplete="new-password" minlength="6"></div>
+          <div class="field"><label for="recoveryConfirmKeyword">Confirm new security keyword</label><input id="recoveryConfirmKeyword" type="password" autocomplete="new-password" minlength="6"></div>
+          <button id="recoverKeywordButton" class="btn-primary" type="button">Restore chat key and reset keyword</button>
+          <p style="text-align:center;margin:14px 0 0;font-size:13px">Know your keyword? <a href="#change" id="backToChangeLink" style="color:#74dff2">Change it</a></p>
+          <p style="text-align:center;margin:10px 0 0;font-size:13px">No Recovery Codes? <a href="reset_chat_identity.html" style="color:#74dff2">Create a new chat key</a></p>
+        </section>
+      </form>
+
+      <nav class="page-links" aria-label="Account links">
+        <a id="loginLink" href="login.html" hidden>Sign in</a>
+        <a id="communityLink" href="community.html">Back to community</a>
+      </nav>
+    </section>
+  </main>
+
+  <div id="successOverlay" hidden>
+    <section class="success-dialog" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+      <div class="eyebrow">Recovery backup</div>
+      <h2 id="successTitle">Security keyword updated</h2>
+      <p id="successText">Download your new Recovery Codes file.</p>
+      <a id="downloadRecoveryLink" class="btn-primary" download="MGMCOET-Recovery-Codes.json">Download Recovery Codes</a>
+        <p style="margin-bottom:0">Your account password opens this file if you forget your keyword.</p>
+      <a class="success-continue" href="community.html">Continue to chat</a>
+    </section>
+  </div>
+
+  <script type="module">
+    import { changeSecurityKeyword, resetSecurityKeywordWithRecoveryFile, getSession } from './auth.js';
+    import { makeRecoveryCodes, recoveryCodesBlob } from './recovery-codes.js';
+
+    const status = document.getElementById('statusMessage');
+    const historyNotice = document.getElementById('historyNotice');
+    const currentKeywordInput = document.getElementById('currentKeyword');
+    const form = document.getElementById('keywordForm');
+    const button = document.getElementById('saveKeywordButton');
+    const loginLink = document.getElementById('loginLink');
+    const communityLink = document.getElementById('communityLink');
+    const downloadRecoveryLink = document.getElementById('downloadRecoveryLink');
+    const successOverlay = document.getElementById('successOverlay');
+    const changePanel = document.getElementById('changeKeywordPanel');
+    const recoverPanel = document.getElementById('recoverKeywordPanel');
+
+    function showMessage(text, type) {
+      status.textContent = text;
+      status.className = `form-message show ${type}`;
+    }
+
+    function setMode(recovering) {
+      changePanel.hidden = recovering;
+      recoverPanel.hidden = !recovering;
+      historyNotice.classList.toggle('show', recovering);
+      status.className = 'form-message';
+    }
+
+    async function finishRotation(result, hideForm = true, successText = 'Security keyword updated.') {
+      const codes = makeRecoveryCodes(result.keywordBackup, result.recoveryBackup);
+      const blob = recoveryCodesBlob(codes);
+      if (downloadRecoveryLink.dataset.url) URL.revokeObjectURL(downloadRecoveryLink.dataset.url);
+      const localUrl = URL.createObjectURL(blob);
+      downloadRecoveryLink.dataset.url = localUrl;
+      downloadRecoveryLink.href = localUrl;
+      document.getElementById('successTitle').textContent = successText;
+      successOverlay.hidden = false;
+      if (hideForm) {
+        form.hidden = true;
+        historyNotice.classList.remove('show');
+      }
+    }
+
+    let session = null;
+    try { session = await getSession(); } catch { /* show sign-in link below */ }
+    if (!session) {
+      showMessage('Sign in to your portal account first.', 'error');
+      loginLink.hidden = false;
+      communityLink.hidden = true;
+    } else {
+      form.hidden = false;
+    }
+
+    document.getElementById('forgotKeywordLink').addEventListener('click', (event) => { event.preventDefault(); setMode(true); });
+    document.getElementById('backToChangeLink').addEventListener('click', (event) => { event.preventDefault(); setMode(false); });
+
+    currentKeywordInput.addEventListener('input', () => {
+      if (currentKeywordInput.value.trim()) historyNotice.classList.remove('show');
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const currentPassword = document.getElementById('accountPassword').value;
+      const currentKeyword = document.getElementById('currentKeyword').value;
+      const newKeyword = document.getElementById('newKeyword').value;
+      const confirmation = document.getElementById('confirmKeyword').value;
+
+      historyNotice.classList.remove('show');
+
+      if (!currentKeyword.trim()) {
+        currentKeywordInput.focus();
+        showMessage('Current security keyword is required to change it and preserve your existing chats.', 'error');
+        return;
+      }
+
+      if (!currentPassword) {
+        showMessage('Enter your account password to create the updated Recovery Codes file.', 'error');
+        return;
+      }
+
+      if (newKeyword.trim().length < 6) {
+        showMessage('New security keyword must contain at least 6 characters.', 'error');
+        return;
+      }
+      if (newKeyword !== confirmation) {
+        showMessage('The new security keywords do not match.', 'error');
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = 'Updating…';
+      try {
+        const result = await changeSecurityKeyword({ currentPassword, currentKeyword, newKeyword });
+        await finishRotation(result);
+      } catch (error) {
+        const messages = {
+          WRONG_ACCOUNT_PASSWORD: 'The account password is incorrect.',
+          WRONG_KEYWORD: 'The current security keyword is incorrect.',
+          KEYWORD_TOO_SHORT: 'New security keyword must contain at least 6 characters.',
+          KEYWORD_UNCHANGED: 'Choose a different security keyword.',
+          NO_BACKUP: 'No encrypted key backup was found for this account.',
+          NOT_LOGGED_IN: 'Your session expired. Sign in and try again.',
+          INVALID_KEY_BACKUP: 'The encrypted key backup could not be read. No changes were made.'
+        };
+        showMessage(messages[error.message] || 'Unable to update the keyword. No changes were made. Please try again.', 'error');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Update security keyword';
+      }
+    });
+
+    document.getElementById('recoverKeywordButton').addEventListener('click', async () => {
+      const currentPassword = document.getElementById('recoveryAccountPassword').value;
+      const recoveryFile = document.getElementById('recoveryFile').files?.[0];
+      const newKeyword = document.getElementById('recoveryNewKeyword').value;
+      const confirmation = document.getElementById('recoveryConfirmKeyword').value;
+      if (!currentPassword || !recoveryFile) { showMessage('Enter your account password and choose the Recovery Codes file.', 'error'); return; }
+      if (newKeyword.trim().length < 6) { showMessage('New security keyword must contain at least 6 characters.', 'error'); return; }
+      if (newKeyword !== confirmation) { showMessage('The new security keywords do not match.', 'error'); return; }
+      const recoverButton = document.getElementById('recoverKeywordButton');
+      recoverButton.disabled = true;
+      recoverButton.textContent = 'Restoring chat key…';
+      try {
+        const result = await resetSecurityKeywordWithRecoveryFile({ currentPassword, recoveryFile, newKeyword });
+        await finishRotation(result);
+      } catch (error) {
+        const messages = {
+          WRONG_ACCOUNT_PASSWORD: 'The account password is incorrect.',
+          WRONG_RECOVERY_PASSWORD: 'The account password does not unlock this Recovery Codes file.',
+          LEGACY_RECOVERY_FILE: 'This older file is encrypted with the old security keyword. It cannot recover a forgotten keyword; use it with the old keyword to create a new Recovery Codes file.',
+          INVALID_RECOVERY_FILE: 'Choose a valid MGMCOET Recovery Codes JSON file.',
+          KEYWORD_TOO_SHORT: 'New security keyword must contain at least 6 characters.',
+          NO_BACKUP: 'No encrypted key backup was found for this account.',
+          NOT_LOGGED_IN: 'Your session expired. Sign in and try again.'
+        };
+        showMessage(messages[error.message] || `Unable to restore the key: ${error.message || 'Please try again.'}`, 'error');
+      } finally {
+        recoverButton.disabled = false;
+        recoverButton.textContent = 'Restore chat key and reset keyword';
+      }
+    });
+
+    recoverPanel.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && event.target.matches('input:not([type="file"])')) {
+        event.preventDefault();
+        document.getElementById('recoverKeywordButton').click();
+      }
+    });
+  </script>
+</body>
+</html>

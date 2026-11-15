@@ -3,5 +3,5 @@ function clearSecurityNoticeFlag() {
   catch { /* session storage may be disabled */ }
 }
 
-document.querySelector('a[href="./index.html"]')?.addEventListener('click', clearSecurityNoticeFlag);
+document.querySelector('a[href="./login.html"]')?.addEventListener('click', clearSecurityNoticeFlag);
 window.setTimeout(clearSecurityNoticeFlag, 5000);

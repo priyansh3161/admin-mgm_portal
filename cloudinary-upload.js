@@ -25,11 +25,7 @@ export function uploadSignedCloudinaryFile(signature, file, { filename, onProgre
   const form = new FormData();
   form.append('file', file, filename || file.name || 'upload.dat');
   for (const key of ['api_key', 'timestamp', 'public_id', 'upload_preset', 'overwrite', 'allowed_formats', 'signature']) {
-    // Optional signature parameters must be omitted when absent. Sending the
-    // literal string "undefined" changes Cloudinary's signed parameter set.
-    if (signature[key] !== undefined && signature[key] !== null) {
-      form.append(key, String(signature[key]));
-    }
+    form.append(key, signature[key]);
   }
   const endpoint = `https://api.cloudinary.com/v1_1/${encodeURIComponent(signature.cloud_name)}/${encodeURIComponent(signature.resource_type)}/upload`;
   return new Promise((resolve, reject) => {
