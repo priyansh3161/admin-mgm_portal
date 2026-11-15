@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/jpeg" href="./mgmcoet-mark.jpg">
+  <title>Staff Console | MGMCOET</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--bg:#eef3fd;--surface:rgba(248,252,255,.91);--ink:#10233f;--soft:#526b83;--muted:#7188a0;--blue:#2477c9;--border:rgba(35,91,135,.2);--shadow:0 24px 70px rgba(6,38,72,.24)}
+    *{box-sizing:border-box}body{position:relative;isolation:isolate;margin:0;min-height:100vh;background:#cde7f8;color:var(--ink);font:14px Inter,sans-serif}body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(6,31,58,.20),rgba(12,90,142,.04) 55%,rgba(5,36,68,.16)),url("./bg%204.jpg") center/cover no-repeat}.shell{width:min(900px,calc(100% - 32px));margin:8vh auto}.brand{font:800 12px Sora,sans-serif;letter-spacing:.14em;color:#f5fbff;text-shadow:0 2px 12px rgba(8,38,67,.72);text-transform:uppercase;margin-bottom:18px}.card{background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:22px;padding:clamp(22px,5vw,42px);box-shadow:var(--shadow)}h1{font:800 clamp(25px,5vw,34px) Sora,sans-serif;letter-spacing:-.04em;margin:0 0 9px}.intro{color:var(--soft);line-height:1.65;margin:0 0 26px}.field{margin:14px 0}label{display:block;font-weight:700;font-size:12px;color:var(--soft);margin-bottom:7px}input{width:100%;font:14px Inter,sans-serif;padding:13px 14px;border:1px solid var(--border);border-radius:11px;background:rgba(255,255,255,.86);color:var(--ink)}input:focus{outline:3px solid rgba(36,119,201,.18);border-color:var(--blue)}button,.action{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;background:linear-gradient(120deg,#318dd4,#1766b0);color:white;padding:12px 17px;text-decoration:none;font:700 13px Inter,sans-serif;cursor:pointer}.submit{width:100%;margin-top:9px}.submit:disabled{opacity:.6;cursor:wait}.status{min-height:20px;margin-top:12px;color:#b42318;font-size:13px}.workspace[hidden],#loginCard[hidden]{display:none}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:26px}.badge{display:inline-flex;border-radius:99px;padding:8px 13px;background:#e1f1ff;color:#18578a;font-size:12px;font-weight:700;white-space:nowrap}.logout{background:rgba(255,255,255,.88);color:var(--soft);border:1px solid var(--border)}.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.tool{padding:20px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.72)}.tool h2{font:700 16px Sora,sans-serif;margin:0 0 7px}.tool p{color:var(--soft);font-size:13px;line-height:1.6;margin:0 0 16px}.tool .action{width:100%}.small{color:#526b83;font-size:12px;line-height:1.6;margin-top:22px}@media(max-width:520px){.shell{margin:24px auto}.top{flex-direction:column}.logout{align-self:flex-start}}
+    .shell{width:min(1180px,calc(100% - 32px));margin:5vh auto}
+    .analytics{margin-top:18px;padding:22px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.82)}
+    .analytics-head,.analytics-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .analytics-head{margin-bottom:16px}.analytics-head h2{font:700 19px Sora,sans-serif;margin:0}
+    .analytics .intro{font-size:12px;margin:5px 0 0}.analytics-refresh{padding:9px 13px}
+    .analytics-status{min-height:18px;margin:0 0 12px;color:var(--soft);font-size:12px}
+    .analytics-status.error{color:#b42318}
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+    .stat{padding:13px;border:1px solid var(--border);border-radius:12px;background:#fff}
+    .stat span{display:block;color:var(--soft);font-size:11px}.stat strong{display:block;margin-top:6px;font:700 19px Sora,sans-serif;overflow-wrap:anywhere}
+    .analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
+    .analytics-box{min-width:0;padding:18px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.88);box-shadow:0 7px 20px rgba(16,55,91,.045)}
+    .analytics-box h3{font:700 14px Sora,sans-serif;margin:0}.analytics-box p{color:var(--soft);font-size:11px;line-height:1.55;margin:6px 0 12px}
+    .daily-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 4px}
+    .daily-summary div{padding:10px 11px;border-radius:11px;background:#f2f7fd;border:1px solid #e3edf7}
+    .daily-summary span{display:block;color:var(--muted);font-size:10px}.daily-summary strong{display:block;margin-top:4px;font:700 16px Sora,sans-serif;color:var(--ink)}
+    .daily-summary strong.positive{color:#12805c}.daily-summary strong.negative{color:#c2414b}
+    .daily-chart{height:240px;position:relative;border-radius:12px;background:linear-gradient(180deg,#f8fbff,#fff);overflow:hidden}
+    .daily-chart svg{width:100%;height:100%;display:block;overflow:visible}.chart-grid{stroke:#dce7f2;stroke-width:1;stroke-dasharray:3 5}.chart-area{fill:url(#dailyFill)}.chart-line{fill:none;stroke:#2678d2;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.chart-point{fill:#fff;stroke:#2678d2;stroke-width:2.5;cursor:pointer}.chart-point:hover,.chart-point:focus{fill:#2678d2;stroke:#fff;stroke-width:3;outline:none}.chart-y-label,.chart-x-label{fill:#7489a0;font:10px Inter,sans-serif}.chart-empty{height:100%;display:grid;place-items:center;color:var(--muted);font-size:12px}
+    .metric-track{height:7px;background:#edf3f9;border-radius:99px;overflow:hidden;margin-top:6px}.metric-fill{height:100%;min-width:2px;border-radius:inherit;background:linear-gradient(90deg,#46a3ec,#465fe0)}
+    .metric-detail{display:block;color:var(--muted);font-size:10px;margin-top:3px}.usage-row,.table-row{align-items:center}.usage-row>span:first-child,.table-row>span:first-child{min-width:80px}.metric-item{min-width:0;flex:1}
+    .usage-list,.table-list,.error-list{display:grid;gap:8px}
+    .usage-row,.table-row{display:flex;justify-content:space-between;gap:10px;color:var(--soft);font-size:12px}
+    .usage-row strong,.table-row strong{color:var(--ink);text-align:right}
+    .error-row{padding:9px 0;border-top:1px solid var(--border);font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+    .error-row:first-child{border-top:0}.error-row strong{display:block;color:var(--ink)}.error-row span{color:var(--soft)}
+    .setup-link{color:#1766b0;font-weight:700}
+    @media(max-width:760px){.analytics-grid{grid-template-columns:1fr}.daily-chart{height:210px}}
+    @media(max-width:520px){.shell{width:calc(100% - 20px);margin:18px auto}.analytics{padding:15px}.analytics-head{align-items:flex-start}.analytics-head h2{font-size:17px}.analytics-refresh{padding:8px 10px}.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.daily-chart{height:190px}.daily-summary{gap:5px}.daily-summary div{padding:8px}.daily-summary strong{font-size:14px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="brand">MGMCOET  |  Staff Console</div>
+    <section class="card" id="loginCard">
+      <h1>Staff sign in</h1>
+      <p class="intro">Private entry for approved academic admins and subadmins.</p>
+      <form id="loginForm">
+        <div class="field"><label for="email">Staff email</label><input id="email" type="email" autocomplete="username" required></div>
+        <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
+        <button class="submit" id="signIn" type="submit">Sign in</button>
+      </form>
+      <div class="status" id="status" role="status"></div>
+    </section>
+    <section class="card workspace" id="workspace" hidden>
+      <header class="top"><div><h1>Academic staff dashboard</h1><p class="intro" id="welcome" style="margin-bottom:0"></p></div><div style="display:flex;gap:9px;align-items:center"><span class="badge" id="roleBadge"></span><button class="logout" id="logout" type="button">Sign out</button></div></header>
+      <div class="tools">
+        <article class="tool"><h2>Academic content</h2><p>Create subjects and chapters, upload videos and notes, publish assignments and notices.</p><a class="action" href="./subadmin.html">Open content manager</a></article>
+        <article class="tool" id="adminTools" hidden><h2>Primary admin tools</h2><p>Review E-Library uploads, manage PYQs and grant or revoke academic staff roles inside the content manager.</p><a class="action" href="./subadmin.html">Open admin controls</a></article>
+      </div>
+      <section class="analytics" id="analyticsPanel" hidden aria-labelledby="analyticsHeading">
+        <header class="analytics-head">
+          <div><h2 id="analyticsHeading">Analytics</h2><p class="intro">Portal activity, database size and recent issues.</p></div>
+          <button class="analytics-refresh" id="analyticsRefresh" type="button">Refresh</button>
+        </header>
+        <p class="analytics-status" id="analyticsStatus" role="status">Loading analytics...</p>
+        <div class="stat-grid">
+          <div class="stat"><span>Users today</span><strong id="metricToday">-</strong></div>
+          <div class="stat"><span>Users this month</span><strong id="metricMonthUsers">-</strong></div>
+          <div class="stat"><span>Page visits this month</span><strong id="metricMonthViews">-</strong></div>
+          <div class="stat"><span>Database size</span><strong id="metricDatabase">-</strong></div>
+          <div class="stat"><span>DB change vs first monthly sample</span><strong id="metricDatabaseChange">-</strong></div>
+          <div class="stat"><span>Browser errors  |  24h</span><strong id="metricErrors">-</strong></div>
+        </div>
+        <div class="analytics-grid">
+          <section class="analytics-box"><h3>Daily active users  |  last 30 days</h3><p>Unique signed-in users seen each day. Hover or focus a point for the exact date and count.</p><div class="daily-summary"><div><span>30-day average</span><strong id="dailyAverage">-</strong></div><div><span>Peak day</span><strong id="dailyPeak">-</strong></div><div><span>Last 7 days</span><strong id="dailyTrend">-</strong></div></div><div class="daily-chart" id="dailyChart" role="group" aria-label="Daily active users over the last 30 days"></div></section>
+          <section class="analytics-box"><h3>Supabase requests</h3><p id="usagePeriod">Counts across Auth, Realtime, REST and Storage.</p><div class="usage-list" id="usageList"></div></section>
+          <section class="analytics-box"><h3>Firebase / Firestore  |  this month</h3><p>Emergency Chat and E-Library document operations and current storage.</p><div class="usage-list" id="firebaseList"></div></section>
+          <section class="analytics-box"><h3>Largest database tables</h3><p>Current table size, including indexes.</p><div class="table-list" id="tableList"></div></section>
+          <section class="analytics-box"><h3>Recent issues</h3><p>Browser errors and Supabase service errors.</p><div class="error-list" id="errorList"></div></section>
+        </div>
+      </section>
+      <p class="small">Access is checked against the Supabase <code>academic_staff</code> role. The content manager applies the same role permissions.</p>
+    </section>
+  </main>
+  <script type="module" src="./admin-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{
+    "$schema":  "https://openapi.vercel.sh/vercel.json",
+    "headers":  [
+                    {
+                        "source":  "/(.*)",
+                        "headers":  [
+                                        {
+                                            "key":  "Strict-Transport-Security",
+                                            "value":  "max-age=63072000; includeSubDomains; preload"
+                                        },
+                                        {
+                                            "key":  "X-Content-Type-Options",
+                                            "value":  "nosniff"
+                                        },
+                                        {
+                                            "key":  "X-Permitted-Cross-Domain-Policies",
+                                            "value":  "none"
+                                        },
+                                        {
+                                            "key":  "Origin-Agent-Cluster",
+                                            "value":  "?1"
+                                        },
+                                        {
+                                            "key":  "X-Frame-Options",
+                                            "value":  "SAMEORIGIN"
+                                        },
+                                        {
+                                            "key":  "Referrer-Policy",
+                                            "value":  "strict-origin-when-cross-origin"
+                                        },
+                                        {
+                                            "key":  "Permissions-Policy",
+                                            "value":  "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+                                        },
+                                        {
+                                            "key":  "Cross-Origin-Opener-Policy",
+                                            "value":  "same-origin-allow-popups"
+                                        },
+                                        {
+                                            "key":  "Content-Security-Policy",
+                                            "value":  "default-src \u0027self\u0027; base-uri \u0027self\u0027; object-src \u0027none\u0027; frame-ancestors \u0027self\u0027; form-action \u0027self\u0027; script-src \u0027self\u0027 \u0027sha256-20JAI/NvvWUhRO30+3uI8/GmjgxH31SvEeVijZECIyw=\u0027 \u0027sha256-w2bUhZpFfy8AeRJ6YJdbEviEdlczu91CEsvRrfPJq9Q=\u0027 https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.gstatic.com https://accounts.google.com \u0027sha256-1ktuurVGfK/6X3FyI9hqMvAdJXNpV/1UeueUkVvHqn0=\u0027 \u0027sha256-2OHew2FoAPGGzXYaImyM/9J3RoQ58530EMpJibBjvEg=\u0027 \u0027sha256-5SF/u2KyyxNM0xCwJcg7vaR1/0TTRE6pqR1yss/2NW8=\u0027 \u0027sha256-8NZkedgIlCUxvAKmIoDzKjGjKHDWFsgiKl8ievpAmxw=\u0027 \u0027sha256-90z26IFSzjyjRxK9wCCpdib4Ujh2dFB3NdtVEulO/vk=\u0027 \u0027sha256-A4wuj5Eeh1mKW7bPK++M55jFhpqYkYf8RZ5WN3PkBi8=\u0027 \u0027sha256-ABZYiTp+jVkfav+yaWxY2BlpSYBbQB/7a+1+jbhF9Bw=\u0027 \u0027sha256-BmGhtPHRabDS86L0C90iH4Fs4x8uZ+ahYwI3DTOZhZs=\u0027 \u0027sha256-CqRUlWJ1eDY/jJ61iAHhT9Uy154iUKr5QFdN2/HzKLA=\u0027 \u0027sha256-GGlTxC+zOaW8rNas4PYNq+2fTy/EOFimniaMlk0Xb1M=\u0027 \u0027sha256-Gkc9YDffZPfCkdRSgy1huQyW+Bwqyj3nRRvOJZVMvqk=\u0027 \u0027sha256-Hszb0pVh4RVgJ3s5CJdxgF1aIh/RwunAidq7ongAb0c=\u0027 \u0027sha256-I7OewxVxmO/gDcGZmM1UnblddrzG4nySnUWkNia6FEk=\u0027 \u0027sha256-IsLlRPLHuN68dx1zulF+hcE0hKsjU0bMtnDL7UU9A/o=\u0027 \u0027sha256-J6p3IaxGa+/cFY1uufDn00BRZfYP9Kc/rsOpwTX71XY=\u0027 \u0027sha256-JadSnUyHYajs+S1ZTM92ekAhK/UnSDo4KPksp1uxoaM=\u0027 \u0027sha256-P6JDk2MA/dvEcBtMfcdpZhS3ezBDYvZxBPjArjCF4YU=\u0027 \u0027sha256-QAsLShYZdeVoqbm1TujeJLBX8xwgHVsKwZP8uBtyfx8=\u0027 \u0027sha256-U7gCpDxxJYffs1fN8sh1PVGVKG0O+7f3FNK7vt9jMvc=\u0027 \u0027sha256-VgDqWJGlxThbpsL9L5NC/z+MYMSuu01GG251KrqKFGM=\u0027 \u0027sha256-WnlAXEVzk7NgPENBAyToEkiyXAzvGJTtiI6M4AiXNJ4=\u0027 \u0027sha256-ZiUFhy4PQp+h6W9gN9uthi++4NUjzJtZcH4eg+pYT/A=\u0027 \u0027sha256-afCxhDJyTh6w0zU9nwoYrH9kNnqzfVhVTgMrOyFfPEM=\u0027 \u0027sha256-bVIgUdTbtWKcdSzR3/ybzbGYa3jML3gRQl5YPng3Al8=\u0027 \u0027sha256-bwjXKTwFmakcMHqP7NCuXCQWgI4tvhqS/SJBq937EXk=\u0027 \u0027sha256-f6MxhtP/ppsn+3jfmLkDZTRfD2TBP1AbqvQr7WT/hlA=\u0027 \u0027sha256-gM0H0B792ANI96q3vXrAMqMz4ViGmRcrgHGCJCqzHRA=\u0027 \u0027sha256-iwTrwLxVk/K0n8Boh11StWuEChw8k2ABE5tGwtBjENY=\u0027 \u0027sha256-k8FISR4eL8YUKgpx7rtMVOEdF9q3LBrqei6yzVhAAqs=\u0027 \u0027sha256-nEcsaPwcKSP9jKZLBLvtJOKr9zuHcvSiHlE/beQJuew=\u0027 \u0027sha256-omKMn3zRNO8IqCVUFOeFQw0Pm8BLK8KZKzXHbhFJjMs=\u0027 \u0027sha256-p4hDFfjKqL9tEx1IQ3Iz1eKxJof0ljaAgv7Hj9NH3j0=\u0027 \u0027sha256-s3IKzsICszfP9GtUrpK5IE1lF8dPB6PG83XcUo3H908=\u0027 \u0027sha256-vmjVtrTYN6DM08bHtQTrW1H/vn/CbubZ5Habkb62xwE=\u0027 \u0027sha256-wpfVbo4Npj/M5Pvnw8O2vY7Af1HDRfqoNV/y6v+iIH0=\u0027 \u0027sha256-3ZWe1eJt7oD3rO9wplQpsGVUwMqii++wavzXSvRejjY=\u0027 \u0027sha256-ReNwA/X97hvZmqTde7T+zbsMAhbuItWg6TwvNFh/DpU=\u0027 \u0027sha256-9ZRHh4yw0jFo7roZygepdUU4QvjKXvk1eLE4ds6PBUs=\u0027; style-src \u0027self\u0027 \u0027unsafe-inline\u0027 https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src \u0027self\u0027 data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src \u0027self\u0027 data: blob: https:; media-src \u0027self\u0027 blob: https:; connect-src \u0027self\u0027 https://*.supabase.co wss://*.supabase.co https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://api.cloudinary.com https://res.cloudinary.com https://accounts.google.com https://api.na-backend.odysee.com; frame-src \u0027self\u0027 data: https://accounts.google.com https://*.supabase.co https://res.cloudinary.com https://odysee.com https://www.odysee.com https://drive.google.com https://docs.google.com https://drive.usercontent.google.com; upgrade-insecure-requests"
+                                        }
+                                    ]
+                    }
+                ]
+}
