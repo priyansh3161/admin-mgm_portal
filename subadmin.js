@@ -21,6 +21,22 @@
     function safeResourceUrl(value){
       try { const url=new URL(String(value||'')); const parts=url.pathname.split('/').filter(Boolean); return url.protocol==='https:'&&url.hostname==='res.cloudinary.com'&&!url.port&&!url.username&&!url.password&&!url.search&&!url.hash&&parts[0]==='n4yrq0td'&&['image','raw'].includes(parts[1])&&parts[2]==='upload'&&!parts.some(part=>part==='.'||part==='..')?url.href:''; } catch { return ''; }
     }
+    const driveHosts=new Set(['drive.google.com','docs.google.com','drive.usercontent.google.com']);
+    function googleDriveFileId(url){
+      if(!driveHosts.has(url.hostname.toLowerCase()))return '';
+      const pathMatch=url.pathname.match(/\/(?:file|document|spreadsheets|presentation|forms)\/d\/([A-Za-z0-9_-]+)/i);
+      return pathMatch?.[1]||url.searchParams.get('id')||'';
+    }
+    function normalizeDriveShareUrl(value,label){
+      if(!value)return '';
+      const normalized=normalizeOptionalHttpsUrl(value,label),url=new URL(normalized);
+      if(url.protocol!=='https:'||!driveHosts.has(url.hostname.toLowerCase())||!googleDriveFileId(url))
+        throw new Error(label+' must be a Google Drive file link shared with access to view.');
+      return url.href;
+    }
+    function currentDriveLink(value){
+      try{return driveHosts.has(new URL(String(value||'')).hostname.toLowerCase())?value:'';}catch{return '';}
+    }
     async function loadResourceRequests(){
       if(state.role!=='admin') return;
       const list=$('resourceRequestsList'); message('resourceRequestsStatus','Loading pending uploads...');
@@ -102,6 +118,11 @@
       if(!value)return '';
       let url;try{url=new URL(value);}catch{throw new Error('Enter a valid video URL.');}
       if(url.protocol!=='https:'||url.username||url.password)throw new Error('Use a secure HTTPS video URL.');
+      if(driveHosts.has(url.hostname.toLowerCase())){
+        const fileId=googleDriveFileId(url);
+        if(!fileId)throw new Error('The Google Drive video link must point to a shared file.');
+        return 'https://drive.google.com/uc?export=download&id='+encodeURIComponent(fileId);
+      }
       if(url.hostname==='huggingface.co'||url.hostname==='www.huggingface.co'){
         const parts=url.pathname.split('/');const blobIndex=parts.indexOf('blob');
         if(blobIndex!==-1){parts[blobIndex]='resolve';url.pathname=parts.join('/');url.search='?download=true';}
@@ -289,28 +310,36 @@
         if(videoFile&&videoUrl)throw new Error('Choose either a video file or a video URL, not both.');
         const odyseeVideo=normalizeOdyseeEmbedUrl($('chapterVideoOdysee').value.trim(),'Odysee video fallback');
         const video=await upload(videoFile,'video',true),notesFile=$('chapterNotes').files[0];
+        const notesDriveUrl=normalizeDriveShareUrl($('chapterNotesDriveUrl').value.trim(),'Notes Drive link');
+        if(notesFile&&notesDriveUrl)throw new Error('Choose either a Cloudinary notes upload or a Google Drive notes link.');
         const notesUrl2=normalizeOptionalHttpsUrl($('chapterNotesUrl2').value.trim(),'Notes Link 2');
         let notes=null,notesUploadError=null;
         if(notesFile){try{notes=await upload(notesFile,'auto');}catch(error){notesUploadError=error;}}
-        if(notesUploadError&&!notesUrl2)throw notesUploadError;
+        if(notesUploadError&&!notesDriveUrl&&!notesUrl2)throw notesUploadError;
         const priorVideo=readChapterVideo(existing?.video_url,existing?.video_odysee_url);
         const hostedPrimaryUrl=video?.url||videoUrl||null;
         const primaryVideoUrl=hostedPrimaryUrl||odyseeVideo||null;
         const videoOdyseeFallback=hostedPrimaryUrl?odyseeVideo:null;
-        const notesPrimaryUrl=notesUploadError?notesUrl2:(notes?.url||existing?.notes_url||notesUrl2||null);
+        const notesPrimaryUrl=notes?.url||notesDriveUrl||(notesUploadError?notesUrl2:(existing?.notes_url||notesUrl2||null));
         const notesSecondaryUrl=notesUploadError?null:(notesUrl2&&notesUrl2!==notesPrimaryUrl?notesUrl2:(existing?.notes_url_2&&existing.notes_url_2!==notesPrimaryUrl?existing.notes_url_2:null));
         const payload={
           subject_id:$('chapterSubject').value,title:$('chapterTitle').value.trim(),description:$('chapterDescription').value.trim(),
-          video_url:primaryVideoUrl,video_odysee_url:videoOdyseeFallback,video_public_id:video?.publicId||(primaryVideoUrl===priorVideo.primary?existing?.video_public_id:null),
-          notes_url:notesPrimaryUrl,notes_url_2:notesSecondaryUrl,
-          notes_name:notes?.url?notesFile.name:(notesUploadError?null:(existing?.notes_name||null)),
+          video_url:primaryVideoUrl,video_public_id:video?.publicId||(primaryVideoUrl===priorVideo.primary?existing?.video_public_id:null),
+          notes_url:notesPrimaryUrl,
+          notes_name:notes?.url?notesFile.name:(notesDriveUrl?'Google Drive link':(notesUploadError?null:(existing?.notes_name||null))),
           practice_url:$('chapterPractice').value.trim()||null,chapter_order:Number($('chapterOrder').value)||0
         };
+        if(videoOdyseeFallback||existing?.video_odysee_url)payload.video_odysee_url=videoOdyseeFallback;
+        if(notesSecondaryUrl||existing?.notes_url_2)payload.notes_url_2=notesSecondaryUrl;
         await saveRecord('academic_chapters',payload,id,'chapterStatus','Chapter');
-        if(notesUploadError)message('chapterStatus','Cloudinary upload failed; Notes Link 2 was saved as Notes.');
+        if(notesUploadError)message('chapterStatus','Cloudinary upload failed; the saved Drive / Link 2 URL was used for Notes.');
         cancelEdit('chapterForm','chapterId','chapterSubmit','chapterCancel','Add chapter');
         await loadManagedRecords();
-      }catch(error){message('chapterStatus',error.message||String(error),true);}
+      }catch(error){
+        const detail=error.message||String(error);
+        const saveError=/video_odysee_url/i.test(detail)?'Supabase is missing video_odysee_url. Run schema_academic_video_fallback.sql, then save again.':(/notes_url_2/i.test(detail)?'Supabase is missing notes_url_2. Run schema_academic_notes_link_2.sql, then save again.':detail);
+        message('chapterStatus',saveError,true);
+      }
       finally{button.disabled=false;}
     });
     $('chapterCancel').addEventListener('click',()=>cancelEdit('chapterForm','chapterId','chapterSubmit','chapterCancel','Add chapter'));
@@ -328,7 +357,7 @@
         const chapterSubject=state.subjects.find(subject=>subject.id===chapter.subject_id);
         $('chapterSubjectSearch').value=chapterSubject?subjectOptionLabel(chapterSubject):'';syncChapterSubjectPicker();
         const videoData=readChapterVideo(chapter.video_url,chapter.video_odysee_url);
-        $('chapterVideoUrl').value=videoData.primary;$('chapterVideoOdysee').value=videoData.odysee;$('chapterPractice').value=chapter.practice_url||'';$('chapterNotesUrl2').value=chapter.notes_url_2||'';
+        $('chapterVideoUrl').value=videoData.primary;$('chapterVideoOdysee').value=videoData.odysee;$('chapterPractice').value=chapter.practice_url||'';$('chapterNotesDriveUrl').value=currentDriveLink(chapter.notes_url);$('chapterNotesUrl2').value=chapter.notes_url_2||'';
         $('chapterSubmit').textContent='Save chapter';$('chapterCancel').hidden=false;$('chapterForm').scrollIntoView({behavior:'smooth',block:'start'});return;
       }
       const remove=event.target.closest('[data-delete-chapter]');if(!remove)return;
@@ -340,8 +369,11 @@
       e.preventDefault();const button=$('assignmentSubmit');button.disabled=true;
       try{
         const subject=state.subjects.find(item=>item.id===$('assignmentSubject').value);if(!subject)throw new Error('Choose a subject.');
-        const id=$('assignmentId').value,existing=state.assignments.find(item=>item.id===id),file=await upload($('assignmentFile').files[0],'auto',false,true);
-        const payload={subject_id:subject.id,title:$('assignmentTitle').value.trim(),description:$('assignmentDescription').value.trim(),branch:subject.branch,year:subject.year,due_at:new Date($('assignmentDue').value).toISOString(),file_url:file?.url||existing?.file_url||null,file_name:file?.url?$('assignmentFile').files[0].name:existing?.file_name||null};
+        const id=$('assignmentId').value,existing=state.assignments.find(item=>item.id===id),fileInput=$('assignmentFile').files[0];
+        const driveUrl=normalizeDriveShareUrl($('assignmentDriveUrl').value.trim(),'Assignment Drive link');
+        if(fileInput&&driveUrl)throw new Error('Choose either a Cloudinary upload or a Google Drive link.');
+        const file=await upload(fileInput,'auto',false,true);
+        const payload={subject_id:subject.id,title:$('assignmentTitle').value.trim(),description:$('assignmentDescription').value.trim(),branch:subject.branch,year:subject.year,due_at:new Date($('assignmentDue').value).toISOString(),file_url:file?.url||driveUrl||existing?.file_url||null,file_name:file?.url?fileInput.name:(driveUrl?'Google Drive link':existing?.file_name||null)};
         await saveRecord('academic_assignments',payload,id,'assignmentStatus','Assignment');
         cancelEdit('assignmentForm','assignmentId','assignmentSubmit','assignmentCancel','Publish assignment');await loadManagedRecords();
       }catch(error){message('assignmentStatus',error.message||String(error),true);}
@@ -353,7 +385,7 @@
       if(edit){
         const item=state.assignments.find(row=>row.id===edit.dataset.editAssignment);if(!item)return;
         $('assignmentId').value=item.id;$('assignmentSubject').value=item.subject_id||'';$('assignmentTitle').value=item.title||'';
-        $('assignmentDescription').value=item.description||'';$('assignmentDue').value=dateTimeLocal(item.due_at);
+        $('assignmentDescription').value=item.description||'';$('assignmentDue').value=dateTimeLocal(item.due_at);$('assignmentDriveUrl').value=currentDriveLink(item.file_url);
         $('assignmentSubmit').textContent='Save assignment';$('assignmentCancel').hidden=false;$('assignmentForm').scrollIntoView({behavior:'smooth',block:'start'});return;
       }
       const remove=event.target.closest('[data-delete-assignment]');if(!remove)return;
@@ -363,8 +395,11 @@
     $('noticeForm').addEventListener('submit',async e=>{
       e.preventDefault();const button=$('noticeSubmit');button.disabled=true;
       try{
-        const id=$('noticeId').value,existing=state.notices.find(item=>item.id===id),file=await upload($('noticeFile').files[0],'auto',false,true);
-        const payload={title:$('noticeTitle').value.trim(),body:$('noticeBody').value.trim(),category:$('noticeCategory').value,branch:$('noticeBranch').value==='__all'?null:$('noticeBranch').value||null,year:$('noticeYear').value==='__all'?null:$('noticeYear').value||null,file_url:file?.url||existing?.file_url||null,file_name:file?.url?$('noticeFile').files[0].name:existing?.file_name||null};
+        const id=$('noticeId').value,existing=state.notices.find(item=>item.id===id),fileInput=$('noticeFile').files[0];
+        const driveUrl=normalizeDriveShareUrl($('noticeDriveUrl').value.trim(),'Notice Drive link');
+        if(fileInput&&driveUrl)throw new Error('Choose either a Cloudinary upload or a Google Drive link.');
+        const file=await upload(fileInput,'auto',false,true);
+        const payload={title:$('noticeTitle').value.trim(),body:$('noticeBody').value.trim(),category:$('noticeCategory').value,branch:$('noticeBranch').value==='__all'?null:$('noticeBranch').value||null,year:$('noticeYear').value==='__all'?null:$('noticeYear').value||null,file_url:file?.url||driveUrl||existing?.file_url||null,file_name:file?.url?fileInput.name:(driveUrl?'Google Drive link':existing?.file_name||null)};
         await saveRecord('academic_notices',payload,id,'noticeStatus','Notice');
         cancelEdit('noticeForm','noticeId','noticeSubmit','noticeCancel','Publish notice');await loadManagedRecords();
       }catch(error){message('noticeStatus',error.message||String(error),true);}
@@ -376,7 +411,7 @@
       if(edit){
         const item=state.notices.find(row=>row.id===edit.dataset.editNotice);if(!item)return;
         $('noticeId').value=item.id;$('noticeTitle').value=item.title||'';$('noticeCategory').value=item.category||'general';
-        $('noticeBranch').value=item.branch||'__all';$('noticeYear').value=item.year||'__all';$('noticeBody').value=item.body||'';
+        $('noticeBranch').value=item.branch||'__all';$('noticeYear').value=item.year||'__all';$('noticeBody').value=item.body||'';$('noticeDriveUrl').value=currentDriveLink(item.file_url);
         $('noticeSubmit').textContent='Save notice';$('noticeCancel').hidden=false;$('noticeForm').scrollIntoView({behavior:'smooth',block:'start'});return;
       }
       const remove=event.target.closest('[data-delete-notice]');if(!remove)return;
@@ -387,9 +422,12 @@
       e.preventDefault();const button=$('pyqSubmit');button.disabled=true;
       try{
         const subject=state.subjects.find(item=>item.id===$('pyqSubject').value);if(!subject)throw new Error('Choose a subject.');
-        const id=$('pyqId').value,existing=state.pyqs.find(item=>item.id===id),file=await upload($('pyqFile').files[0],'auto');
-        if(!file&&!existing?.file_url)throw new Error('Choose a question paper PDF.');
-        const payload={subject_id:subject.id,title:$('pyqTitle').value.trim(),exam_year:Number($('pyqExamYear').value),branch:subject.branch,year:subject.year,file_url:file?.url||existing?.file_url,file_name:file?.url?$('pyqFile').files[0].name:existing?.file_name};
+        const id=$('pyqId').value,existing=state.pyqs.find(item=>item.id===id),fileInput=$('pyqFile').files[0];
+        const driveUrl=normalizeDriveShareUrl($('pyqDriveUrl').value.trim(),'PYQ Drive link');
+        if(fileInput&&driveUrl)throw new Error('Choose either a Cloudinary PDF upload or a Google Drive link.');
+        const file=await upload(fileInput,'auto');
+        if(!file&&!driveUrl&&!existing?.file_url)throw new Error('Upload a question paper to Cloudinary or paste a Google Drive PDF link.');
+        const payload={subject_id:subject.id,title:$('pyqTitle').value.trim(),exam_year:Number($('pyqExamYear').value),branch:subject.branch,year:subject.year,file_url:file?.url||driveUrl||existing?.file_url,file_name:file?.url?fileInput.name:(driveUrl?'Google Drive link':existing?.file_name)};
         await saveRecord('academic_pyqs',payload,id,'pyqStatus','PYQ');
         cancelEdit('pyqForm','pyqId','pyqSubmit','pyqCancel','Add PYQ');await loadManagedRecords();
       }catch(error){message('pyqStatus',error.message||String(error),true);}
@@ -401,7 +439,7 @@
       if(edit){
         const item=state.pyqs.find(row=>row.id===edit.dataset.editPyq);if(!item)return;
         $('pyqId').value=item.id;$('pyqSubject').value=item.subject_id||'';$('pyqExamYear').value=item.exam_year||'';
-        $('pyqTitle').value=item.title||'';$('pyqSubmit').textContent='Save PYQ';$('pyqCancel').hidden=false;
+        $('pyqTitle').value=item.title||'';$('pyqDriveUrl').value=currentDriveLink(item.file_url);$('pyqSubmit').textContent='Save PYQ';$('pyqCancel').hidden=false;
         $('pyqForm').scrollIntoView({behavior:'smooth',block:'start'});return;
       }
       const remove=event.target.closest('[data-delete-pyq]');if(!remove)return;
