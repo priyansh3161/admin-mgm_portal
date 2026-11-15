@@ -1,1 +1,0 @@
-# admin-mgm_portal
